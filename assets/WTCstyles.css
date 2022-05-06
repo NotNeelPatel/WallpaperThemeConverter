@@ -13,7 +13,6 @@ h1 {
     word-spacing: 7px;
     font-weight: 100;
     display: inline-table;
-
 }
 
 h2 {
@@ -43,6 +42,14 @@ body {
     padding-right: 2.5%;
 }
 
+button {
+    background-color: #8bc7ff;
+    padding: 0.5em;
+    padding-left: 2.5em;
+    padding-right: 2.5em;
+    margin: 0.5em;
+}
+
 .file-upload {
     border: dashed 3px white;
     margin: auto;
@@ -55,10 +62,10 @@ body {
 }
 
 #imageCanvas {
-    text-align: center;
+    border: 1px solid #aaa;
+    display: flex;
+    justify-content: center;
     margin: auto;
-    padding: auto;
-    border: 1px solid #fff;
     max-width: 50%;
 }
 

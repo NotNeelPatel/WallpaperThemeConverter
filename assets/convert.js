@@ -74,7 +74,6 @@ function initialize(){
         }
 
     }
-    console.log("this works somehow");
     ctx.putImageData(imageData, 0, 0);
 }
 
