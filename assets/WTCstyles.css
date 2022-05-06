@@ -1,0 +1,73 @@
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inconsolata&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=PT+Serif&display=swap');
+
+@viewport {
+    width: device-width;
+    zoom: 1;
+}
+
+h1 {
+    font-family: "PT Serif", serif;
+    letter-spacing: 5px;
+    word-spacing: 7px;
+    font-weight: 100;
+    display: inline-table;
+
+}
+
+h2 {
+    font-family: "JetBrains Mono", monospace;
+}
+
+a {
+    text-decoration: none;
+    text-decoration-line: none;
+    color: #8bc7ff
+}
+
+a:hover {
+    color: #aaa
+}
+
+body {
+    font-family: "Inconsolata", monospace;
+    background-color: #000;
+    color: #fff
+}
+
+#main-container {
+    margin-left: 2.5%;
+    margin-right: 2.5%;
+    padding-left: 2.5%;
+    padding-right: 2.5%;
+}
+
+.file-upload {
+    border: dashed 3px white;
+    margin: auto;
+    padding: 5em;
+    background: #333;
+    width: 50%;
+    height: 20%;
+    cursor: pointer;
+    text-align: center;
+}
+
+#imageCanvas {
+    text-align: center;
+    margin: auto;
+    padding: auto;
+    border: 1px solid #fff;
+    max-width: 50%;
+}
+
+footer {
+    margin-top: 0.5em;
+    padding-top: 0.5em;
+    text-align: center;
+}
+
+footer a {
+    color: #777
+}
