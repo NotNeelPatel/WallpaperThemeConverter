@@ -22,11 +22,25 @@ h2 {
 a {
     text-decoration: none;
     text-decoration-line: none;
-    color: #8bc7ff
 }
 
 a:hover {
     color: #aaa
+}
+
+hr.main {
+    max-width: 90%;
+    height: 4px;
+}
+
+hr.body {
+    max-width: 75%;
+}
+
+
+header {
+    margin-left: 5%;
+    margin-right: 5%;
 }
 
 body {
@@ -43,15 +57,33 @@ body {
 }
 
 button {
-    background-color: #8bc7ff;
+    background-color: #333;
+    color: #fff;
     padding: 0.5em;
     padding-left: 2.5em;
     padding-right: 2.5em;
     margin: 0.5em;
+    cursor: pointer;
 }
 
-.file-upload {
+.important-button {
+    font-size: medium;
+    border: double;
+    background-color: #333;
+    color: #fff;
+    padding: 0.5em;
+    padding-left: 4em;
+    padding-right: 4em;
+    margin: 0.5em;
+    cursor: pointer;
+}
+
+
+
+#imageLoader {
     border: dashed 3px white;
+    display: flex;
+    justify-content: center;
     margin: auto;
     padding: 5em;
     background: #333;
@@ -62,7 +94,7 @@ button {
 }
 
 #imageCanvas {
-    border: 1px solid #aaa;
+    border: 3px solid #aaa;
     display: flex;
     justify-content: center;
     margin: auto;
@@ -72,6 +104,8 @@ button {
 footer {
     margin-top: 0.5em;
     padding-top: 0.5em;
+    display: flex;
+    justify-content: center;
     text-align: center;
 }
 

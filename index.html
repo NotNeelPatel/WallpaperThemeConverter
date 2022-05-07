@@ -13,30 +13,36 @@
   </header>
 
   <body>
+    <hr class="main" />
+    <br/>
     <div id="main-container">
-      <div class="file-upload">    <input type="file" id="imageLoader" name="imageLoader" /></div>
+      <div><input type="file" id="imageLoader" name="imageLoader" /></div>
       <br/>
       <canvas id="imageCanvas"></canvas>
+      <div style="display:flex; justify-content: center;"><button class="important-button"  id ="download-button" type="button" onclick="Download()">↓ Download ↓</button></div>
       <div class="settings-buttons" style="text-align: center">
+        <h3>Select a theme</h3>
+        <hr class="body"/>
+      <button id ="theme" type="button" onclick="Gruvbox()">Gruvbox</button>
+      <button id ="theme" type="button" onclick="Nord()">Nord</button>
+      <button id ="theme" type="button" onclick="Solarized()">Solarized</button>
+      <hr class="body"/>
 <!---
-        <button type="button">Gruvbox Theme (this button does nothing atm)</button>
-        <button type="button">Nord Theme (this button does nothing atm)</button>
-        <button type="button">Custom Theme (this button does nothing atm)</button>
-        <br/>
+
+        
+        <button type="Custom">Custom Theme (this button does nothing atm)</button>
+
 --->
-        <button type="button" onclick="initialize()">Convert</button>
+        <button class="important-button" id="convert" type="button" onclick="initialize()">Convert</button>
       </div>
     </div>
   </body>
   <footer>
+    <p>2022 Neel Patel</p>
     <ul>
       <a href="https://notneelpatel.github.io">My Website</a>
       <a>|</a>
       <a href="https://github.com/NotNeelPatel">GitHub</a>
-      <a>|</a>
-      <a href="https://www.linkedin.com/in/notneelpatel/">Linkedin</a>
-      <a>|</a>
-      <a href="">YouTube (Coming soon!)</a>
     </ul>
   </footer>
 </html>
