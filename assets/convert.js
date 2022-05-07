@@ -101,6 +101,34 @@ function Solarized(){
     convertButton.disabled = false;
 }
 
+function Catppuccin(){
+    theme = [
+        242,205,205,
+        221,182,242,
+        245,194,231,
+        232,162,175,
+        242,143,173,
+        248,189,150,
+        250,227,176,
+        171,233,179,
+        181,232,224,
+        150,205,251,
+        137,220,235,
+        22,19,32,
+        26,24,38,
+        30,30,46,
+        48,45,65,
+        87,82,104,
+        110,108,126,
+        152,139,162,
+        195,186,198,
+        217,224,238,
+        201,203,255,
+        245,224,220,
+    ]
+    convertButton.disabled = false;
+}
+
 function initialize(){ 
     downloadButton.style.visibility = 'hidden';
     var imageData = ctx.getImageData(0,0,canvas.width, canvas.height);
@@ -109,8 +137,6 @@ function initialize(){
     var lens = [];
     var minimum = 0;
     var x = 0;
-    
-
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -132,13 +158,12 @@ function initialize(){
     }
     ctx.putImageData(imageData, 0, 0);
     downloadButton.style.visibility = 'visible';
+
 }
-
-
 function Download(){
     image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
     var link = document.createElement('a');
-    link.download = (".png");
+    link.download = ("wallpaper-theme-converter.png");
     link.href = image;
     link.click();
 }
