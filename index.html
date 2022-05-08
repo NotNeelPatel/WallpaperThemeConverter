@@ -19,21 +19,39 @@
       <div><input type="file" id="imageLoader" name="imageLoader" /></div>
       <br/>
       <canvas id="imageCanvas"></canvas>
-      <div style="display:flex; justify-content: center;"><button class="important-button"  id ="download-button" type="button" onclick="Download()">↓ Download ↓</button></div>
-      <div class="settings-buttons" style="text-align: center">
+
+      <div style="display:flex; justify-content: center;">
+        <button class="important-button"  id ="download-button" type="button" onclick="Download()">↓ Download ↓</button>
+        <button class="important-button" id ="reset-button" type="button" onclick="reset()">Reset Image</button>
+      </div>
+
+      <div style="text-align: center">
         <h3>Select a theme</h3>
+        <div id="palette" style="height:1em;">
+        </div>
         <hr class="body"/>
-      <button id ="theme" type="button" onclick="Gruvbox()">Gruvbox</button>
-      <button id ="theme" type="button" onclick="Nord()">Nord</button>
-      <button id ="theme" type="button" onclick="Solarized()">Solarized</button>
-      <button id ="theme" type="button" onclick="Catppuccin()">Catppuccin</button>
+
+        <button class = "theme-button" type="button" onclick="Gruvbox()">Gruvbox</button>
+        <button class = "theme-button" type="button" onclick="Nord()">Nord</button>
+        <button class = "theme-button" type="button" onclick="Solarized()">Solarized</button>
+        <button class = "theme-button" type="button" onclick="Catppuccin()">Catppuccin</button>
+        <button class = "theme-button" type="button" onclick="Dracula()">Dracula</button>
+      <br/>
       <hr class="body"/>
-<!---
 
-        
-        <button type="Custom">Custom Theme (this button does nothing atm)</button>
+      <button class = "theme-button" id ="custom" type="button" onclick="Custom()"> Custom Theme </button>
+     
+      <div id="custom-menu">
+        <button  type="button" onclick="AddColour()">+</button>
+        <button  type="button" onclick="RemoveColour()">-</button>
 
---->
+        <div id="colours" style="padding: 0.5em; display:block;">
+        </div>
+        <br/>
+        <button type="button" onclick="Done()">Done</button>
+      </div>
+
+      <hr class="body"/>
         <button class="important-button" id="convert" type="button" onclick="initialize()">Convert</button>
       </div>
     </div>
@@ -43,7 +61,7 @@
     <ul>
       <a href="https://notneelpatel.github.io">My Website</a>
       <a>|</a>
-      <a href="https://github.com/NotNeelPatel">GitHub</a>
+      <a href="https://github.com/NotNeelPatel/WallpaperThemeConverter">GitHub Repo</a>
     </ul>
   </footer>
 </html>

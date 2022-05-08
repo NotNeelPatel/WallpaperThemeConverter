@@ -1,16 +1,35 @@
+// Canvas loading variables
 var imageLoader = document.getElementById('imageLoader');
 imageLoader.addEventListener('change', handleImage, false);
 var canvas = document.getElementById('imageCanvas');
 var ctx = canvas.getContext('2d');
-const convertButton = document.getElementById('convert');
-var downloadButton = document.getElementById('download-button');
+
+
+// Buttons and divs that get hidden/change
+const downloadButton = document.getElementById('download-button');
+const resetButton = document.getElementById('reset-button');
+const customMenu = document.getElementById("custom-menu");
+const colours_div = document.getElementById("colours");
+const palette_div = document.getElementById('palette')
+
+// Changing visibility of download/reset buttons, image canvas, and the menu for custom theme
 downloadButton.style.visibility = 'hidden';
+resetButton.style.visibility = 'hidden';
 canvas.style.visibility = 'hidden';
+customMenu.style.display = "none";
 
-convertButton.disabled = true;
+// Global variables
+let ogimage;
+let theme = [];
+let nodes = 0;
+let colour_palette_count = 0;
+let menuVisible = false;
 
+// Loads image onto canvas
 function handleImage(e){
+    ogimage = e;
     var reader = new FileReader();
+
     reader.onload = function(event){
         var img = new Image();
         img.onload = function(){
@@ -20,12 +39,146 @@ function handleImage(e){
         }
         img.src = event.target.result;
     }
+
     reader.readAsDataURL(e.target.files[0]);
-    downloadButton.style.visibility = 'hidden';     
+    downloadButton.style.visibility = 'hidden';
+    resetButton.style.visibility = 'hidden';     
     canvas.style.visibility = 'visible';
 }
-let theme = [];
 
+// Resets the image by taking the data of the original image and calling handleImage
+function reset(){
+    handleImage(ogimage);
+}
+
+// Displays the colour palette
+function Palette(){
+    // Deletes previous colour palette
+    if (colour_palette_count != 0){
+        for (var i = 0; i < colour_palette_count; i++){
+            document.getElementById("palette").removeChild(palette_div.lastElementChild);
+        }
+        colour_palette_count = 0;
+    }
+    // Create new colour palette
+    for(var i = 0; i < theme.length; i+=3){
+        const palette_node = document.createElement("div");
+        palette_node.style.display = "inline-block";
+        palette_node.style.height = '1em';
+        palette_node.style.width = '1em';
+        palette_node.style.border = '1px solid #aaa'; 
+        palette_node.style.backgroundColor = "rgb("+theme[i]+","+theme[i+1]+","+theme[i+2]+")";
+        palette_div.appendChild(palette_node);
+        colour_palette_count++;
+    }
+}
+
+// Opens the custom menu 
+function Custom(){
+    if (menuVisible == true){
+        document.getElementById("custom-menu").style.display = "none";
+        menuVisible = false;
+        Done();
+    } else {
+        document.getElementById("custom-menu").style.display = "block";
+        menuVisible = true;
+    }
+}
+
+// Adds a colour swatch when pressed
+function AddColour(){
+    const colour_node = document.createElement("input");
+    colour_node.setAttribute("type","color");
+    colour_node.id = ("node" + nodes);
+    colours_div.appendChild(colour_node);
+    nodes++;
+}
+
+// Removes a colour swatch when pressed
+function RemoveColour(){
+    if (nodes > 0) {
+        document.getElementById("colours").removeChild(colours_div.lastElementChild);
+        nodes--;
+    }
+}
+
+// When the user is done with their custom theme, the colour data is loaded into the theme array
+function Done(){
+    var hex_colour = "#FFFFFF";
+    var hex_parsed = 0;
+    var colour_palette = [];
+
+    for(var i = 0; i < nodes; i++){
+        hex_colour = document.getElementById("node"+i).value;
+        hex_parsed = hex_colour.match(/^#?([\da-f]{2})([\da-f]{2})([\da-f]{2})$/i);
+        colour_palette[i*3] = parseInt(hex_parsed[1],16);
+        colour_palette[i*3+1] = parseInt(hex_parsed[2],16);
+        colour_palette[i*3+2] = parseInt(hex_parsed[3],16);
+    }
+
+    theme = colour_palette;
+    customMenu.style.display = "none";
+    menuVisible = false;
+    Palette();
+}
+
+/*
+This is the function that processes the image.
+It works by scanning every pixel and finding the nearest colour.
+After finding the nearest colour, it uses that data to reconstruct the image.
+*/
+function initialize(){ 
+    downloadButton.style.visibility = 'hidden';
+    resetButton.style.visibility = 'hidden';
+    // Assigning variables
+    var imageData = ctx.getImageData(0,0,canvas.width, canvas.height);
+    var pixels = imageData.data;
+    var numPixels = pixels.length;
+    var lens = [];
+    var minimum = 0;
+    var x = 0;
+
+    // Create the canvas to the dimensions of the image
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // For every pixel in the image
+    for (var i = 0; i < numPixels; i+=4) {
+        minimum = 0;
+        // For the amount of colours there are in the theme
+        for (var j = 0; j < theme.length; j+=3) {
+            // 3d distance formula
+            lens[x] = (Math.sqrt(Math.pow(pixels[i]-theme[j],2)+Math.pow(pixels[i+1]-theme[j+1],2)+Math.pow(pixels[i+2]-theme[j+2],2)));
+            x += 1;  
+        }
+        x = 0;
+        // Sort to find the smallest value (closest distance)
+        for (var k = 1; k < lens.length; k++) {
+            if (lens[k] < lens[minimum]){
+                minimum = k;      
+                } 
+           }
+        // Assign the R,G, and B values based on the smallest value
+        for (var k = 0; k < 3; k++){
+            pixels[i+k] = theme[minimum*3+k]
+        }
+    }
+    // Reconstruct the image and make the download/reset buttons visible
+    ctx.putImageData(imageData, 0, 0);
+    downloadButton.style.visibility = 'visible';
+    resetButton.style.visibility = 'visible';
+}
+
+
+//Download function. Works on desktop browsers only at the moment.
+function Download(){
+    image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+    var link = document.createElement('a');
+    link.download = ("wallpaper-theme-converter.png");
+    link.href = image;
+    link.click();
+}
+
+// RGB values of each palette, stored in an array.
 function Gruvbox(){
     theme = [
         40,40,40,
@@ -55,8 +208,8 @@ function Gruvbox(){
         131,165,152,
         177,98,134,
         211,134,155];
-        convertButton.disabled = false;
-}
+        Palette();
+    }
 
 function Nord(){
     theme = [
@@ -76,7 +229,7 @@ function Nord(){
         235,203,139,
         163,190,140,
         180,142,173];
-        convertButton.disabled = false;
+        Palette();
 }
 
 function Solarized(){
@@ -96,24 +249,12 @@ function Solarized(){
         108,113,196,
         38,139,210,
         42,161,152,
-        133,153,0
-    ]
-    convertButton.disabled = false;
+        133,153,0];
+        Palette();
 }
 
 function Catppuccin(){
     theme = [
-        242,205,205,
-        221,182,242,
-        245,194,231,
-        232,162,175,
-        242,143,173,
-        248,189,150,
-        250,227,176,
-        171,233,179,
-        181,232,224,
-        150,205,251,
-        137,220,235,
         22,19,32,
         26,24,38,
         30,30,46,
@@ -125,47 +266,33 @@ function Catppuccin(){
         217,224,238,
         201,203,255,
         245,224,220,
-    ]
-    convertButton.disabled = false;
+        242,205,205,
+        221,182,242,
+        245,194,231,
+        232,162,175,
+        242,143,173,
+        248,189,150,
+        250,227,176,
+        171,233,179,
+        181,232,224,
+        150,205,251,
+        137,220,235];
+        Palette();
 }
 
-function initialize(){ 
-    downloadButton.style.visibility = 'hidden';
-    var imageData = ctx.getImageData(0,0,canvas.width, canvas.height);
-    var pixels = imageData.data;
-    var numPixels = pixels.length;
-    var lens = [];
-    var minimum = 0;
-    var x = 0;
-
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    for (var i = 0; i < numPixels; i+=4) {
-        minimum = 0;
-        for (var j = 0; j < theme.length; j+=3) {
-            lens[x] = (Math.sqrt(Math.pow(pixels[i]-theme[j],2)+Math.pow(pixels[i+1]-theme[j+1],2)+Math.pow(pixels[i+2]-theme[j+2],2)));
-            x += 1;  
-        }
-        x = 0;
-        for (var k = 1; k < lens.length; k++) {
-            if (lens[k] < lens[minimum]){
-                minimum = k;      
-                } 
-           }
-        for (var k = 0; k < 3; k++){
-            pixels[i+k] = theme[minimum*3+k]
-        }
-    }
-    ctx.putImageData(imageData, 0, 0);
-    downloadButton.style.visibility = 'visible';
-
+function Dracula(){
+    theme = [
+        40,42,54,
+        68,71,90,
+        68,71,90,
+        248,248,242,
+        98,114,164,
+        139,233,253,
+        80,250,123,
+        255,184,108,
+        255,121,198,
+        189,147,249,
+        255,85,85,
+        241,250,140];
+        Palette();
 }
-function Download(){
-    image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
-    var link = document.createElement('a');
-    link.download = ("wallpaper-theme-converter.png");
-    link.href = image;
-    link.click();
-}
-
-

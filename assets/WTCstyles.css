@@ -15,7 +15,8 @@ h1 {
     display: inline-table;
 }
 
-h2 {
+h2,
+h3 {
     font-family: "JetBrains Mono", monospace;
 }
 
@@ -28,16 +29,6 @@ a:hover {
     color: #aaa
 }
 
-hr.main {
-    max-width: 90%;
-    height: 4px;
-}
-
-hr.body {
-    max-width: 75%;
-}
-
-
 header {
     margin-left: 5%;
     margin-right: 5%;
@@ -49,11 +40,13 @@ body {
     color: #fff
 }
 
-#main-container {
-    margin-left: 2.5%;
-    margin-right: 2.5%;
-    padding-left: 2.5%;
-    padding-right: 2.5%;
+hr.main {
+    max-width: 90%;
+    height: 4px;
+}
+
+hr.body {
+    max-width: 75%;
 }
 
 button {
@@ -73,46 +66,57 @@ button:hover {
 
 .important-button {
     font-size: medium;
-    border: double;
-    background-color: #333;
+    background-color: #555;
     color: #fff;
-    padding: 0.5em;
+    border: double;
     padding-left: 4em;
     padding-right: 4em;
-    margin: 0.5em;
-    cursor: pointer;
 }
 
-
+#main-container {
+    margin-left: 2.5%;
+    margin-right: 2.5%;
+    padding-left: 2.5%;
+    padding-right: 2.5%;
+}
 
 #imageLoader {
     font-family: "Inconsolata", monospace;
+    text-align: center;
+    background: #333;
     border: dashed 3px white;
+    width: 50%;
+    height: 20%;
     display: flex;
     justify-content: center;
     margin: auto;
     padding: 5em;
-    background: #333;
-    width: 50%;
-    height: 20%;
     cursor: pointer;
-    text-align: center;
 }
 
 #imageCanvas {
     border: 3px solid #aaa;
+    max-width: 50%;
     display: flex;
     justify-content: center;
     margin: auto;
-    max-width: 50%;
+}
+
+#custom-menu {
+    border: 3px solid #aaa;
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    padding: 1em;
+    margin: auto;
 }
 
 footer {
-    margin-top: 0.5em;
-    padding-top: 0.5em;
+    text-align: center;
     display: flex;
     justify-content: center;
-    text-align: center;
+    padding-top: 0.5em;
+    margin-top: 0.5em;
 }
 
 footer a {
