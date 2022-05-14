@@ -1,5 +1,5 @@
 ![License](https://img.shields.io/github/license/NotNeelPatel/WallpaperThemeConverter)
-# [Wallpaper Theme Converter](https://notneelpatel.github.io/projects/wallpaper-theme-converter)
+# [Wallpaper Theme Converter](https://notneelpatel.github.io/WallpaperThemeConverter)
 
 ### A webpage that converts any image to any colour palette.
 
