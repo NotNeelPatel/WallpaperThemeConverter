@@ -9,6 +9,7 @@ var ctx = canvas.getContext('2d');
 const downloadButton = document.getElementById('download-button');
 const resetButton = document.getElementById('reset-button');
 const customMenu = document.getElementById("custom-menu");
+const loadingScreen = document.getElementById("loading-screen");
 const colours_div = document.getElementById("colours");
 const palette_div = document.getElementById('palette')
 
@@ -16,7 +17,9 @@ const palette_div = document.getElementById('palette')
 downloadButton.style.visibility = 'hidden';
 resetButton.style.visibility = 'hidden';
 canvas.style.visibility = 'hidden';
-customMenu.style.display = "none";
+loadingScreen.style.visibility = 'hidden';
+customMenu.style.display = 'none';
+
 
 // Global variables
 let ogimage;
@@ -61,11 +64,16 @@ function Palette(){
         colour_palette_count = 0;
     }
     // Create new colour palette
+    var width = Math.max(window.screen.width, window.innerWidth);
+    var square = "1em";
+    if (width < 500){
+        square = "0.5em"
+    }
     for(var i = 0; i < theme.length; i+=3){
         const palette_node = document.createElement("div");
         palette_node.style.display = "inline-block";
-        palette_node.style.height = '1em';
-        palette_node.style.width = '1em';
+        palette_node.style.height = square;
+        palette_node.style.width = square;
         palette_node.style.border = '1px solid #aaa'; 
         palette_node.style.backgroundColor = "rgb("+theme[i]+","+theme[i+1]+","+theme[i+2]+")";
         palette_div.appendChild(palette_node);
@@ -122,12 +130,23 @@ function Done(){
     Palette();
 }
 
+function initialize(){
+    loadingScreen.style.opacity = '100';
+    loadingScreen.style.visibility = 'visible';
+    loadingScreen.style.transition = '0s';
+    setTimeout(function(){
+        Start();
+        loadingScreen.style.transition = '0.5s';
+        loadingScreen.style.opacity = '0';
+        loadingScreen.style.visibility = 'hidden';
+        },0);
+    }
 /*
 This is the function that processes the image.
 It works by scanning every pixel and finding the nearest colour.
 After finding the nearest colour, it uses that data to reconstruct the image.
 */
-function initialize(){ 
+function Start(){ 
     downloadButton.style.visibility = 'hidden';
     resetButton.style.visibility = 'hidden';
     // Assigning variables
@@ -166,6 +185,7 @@ function initialize(){
     ctx.putImageData(imageData, 0, 0);
     downloadButton.style.visibility = 'visible';
     resetButton.style.visibility = 'visible';
+    loadingScreen.style.visibility = 'hidden';
 }
 
 
