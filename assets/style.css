@@ -23,6 +23,7 @@ h3 {
 a {
     text-decoration: none;
     text-decoration-line: none;
+    color:white;
 }
 
 a:hover {
@@ -30,6 +31,9 @@ a:hover {
 }
 
 header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-left: 5%;
     margin-right: 5%;
 }
@@ -78,8 +82,7 @@ button:hover {
     padding-right: 2.5%;
 }
 
-#imageLoader {
-    font-family: "Inconsolata", monospace;
+#drop-zone {
     text-align: center;
     background: #333;
     border: dashed 3px white;
@@ -88,9 +91,24 @@ button:hover {
     display: flex;
     justify-content: center;
     margin: auto;
-    padding: 5em;
+    padding: 1em;
     cursor: pointer;
+    align-items: center;
 }
+
+#imageLoader{
+    font-family: "Inconsolata", monospace;
+    font-size: 1em;
+    
+}
+#imageLoader::file-selector-button {
+    margin-left: 10px;
+    font-family: "Inconsolata", monospace;
+    background-color: #333;
+    color: #fff;
+    margin: 0.5em;
+    cursor: pointer;
+  }
 
 #imageCanvas {
     border: 3px solid #aaa;

@@ -1,6 +1,58 @@
 // Canvas loading variables
-var imageLoader = document.getElementById('imageLoader');
-imageLoader.addEventListener('change', handleImage, false);
+var imageLoader = document.getElementById('drop-zone');
+
+imageLoader.addEventListener('change', e => {
+    handleImage(e.target.files[0])
+});
+window.addEventListener('paste', e => {
+    handleImage(e.clipboardData.files[0]) 
+});
+
+const dropArea = document.body;
+
+        // Prevent default drag behaviors
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, preventDefaults, false)
+        });
+
+        // Highlight drop area when item is dragged over it
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropArea.addEventListener(eventName, highlight, false)
+        });
+
+        // Remove highlight when item is dragged out of drop area
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, unhighlight, false)
+        });
+
+        // Handle dropped files
+        dropArea.addEventListener('drop', handleDrop, false)
+
+        // Prevent default drag behaviors
+        function preventDefaults(event) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+
+        // Highlight drop area
+        function highlight() {
+            dropArea.classList.add('highlight');
+        }
+
+        // Remove highlight from drop area
+        function unhighlight() {
+            dropArea.classList.remove('highlight');
+        }
+
+        // Handle dropped files
+        function handleDrop(event) {
+            const dt = event.dataTransfer;
+            const files = dt.files;
+
+            handleImage(files[0]);
+        }
+
+
 var canvas = document.getElementById('imageCanvas');
 var ctx = canvas.getContext('2d');
 
@@ -27,10 +79,19 @@ let theme = [];
 let nodes = 0;
 let colour_palette_count = 0;
 let menuVisible = false;
+let list_of_themes;
+
+// Fetch data from themes.json
+fetch("./assets/themes.json")
+.then((res) => res.json())
+.then((data) => {
+    list_of_themes = data;
+});
+
 
 // Loads image onto canvas
-function handleImage(e){
-    ogimage = e;
+function handleImage(source){
+    ogimage = source;
     var reader = new FileReader();
 
     reader.onload = function(event){
@@ -43,7 +104,7 @@ function handleImage(e){
         img.src = event.target.result;
     }
 
-    reader.readAsDataURL(e.target.files[0]);
+    reader.readAsDataURL(source);
     downloadButton.style.visibility = 'hidden';
     resetButton.style.visibility = 'hidden';     
     canvas.style.visibility = 'visible';
@@ -176,6 +237,7 @@ function Start(){
                 minimum = k;      
                 } 
            }
+
         // Assign the R,G, and B values based on the smallest value
         for (var k = 0; k < 3; k++){
             pixels[i+k] = theme[minimum*3+k]
@@ -198,121 +260,8 @@ function Download(){
     link.click();
 }
 
-// RGB values of each palette, stored in an array.
-function Gruvbox(){
-    theme = [
-        40,40,40,
-        29,32,33,
-        50,48,47,
-        60,56,54,
-        80,73,69,
-        102,92,84,
-        124,111,100,
-        235,219,178,
-        251,241,199,
-        213,196,161,
-        189,174,147,
-        168,153,132,
-        146,131,116,
-        204,36,29,
-        251,73,52,
-        214,93,14,
-        254,128,25,
-        215,153,33,
-        250,189,47,
-        152,151,26,
-        184,187,38,
-        104,157,106,
-        142,192,124,
-        69,133,136,
-        131,165,152,
-        177,98,134,
-        211,134,155];
-        Palette();
-    }
-
-function Nord(){
-    theme = [
-        46,52,64,
-        59,66,82,
-        67,76,94,
-        76,86,106,
-        216,222,233,
-        229,233,240,
-        236,239,244,
-        143,188,187,
-        136,192,208,
-        129,161,193,
-        94,113,172,
-        191,97,106,
-        208,135,112,
-        235,203,139,
-        163,190,140,
-        180,142,173];
-        Palette();
-}
-
-function Solarized(){
-    theme = [
-        0,43,54,
-        7,54,66,
-        88,110,117,
-        101,123,131,
-        131,148,150,
-        147,161,161,
-        238,232,213,
-        253,246,227,
-        181,137,0,
-        203,75,22,
-        220,50,47,
-        211,54,130,
-        108,113,196,
-        38,139,210,
-        42,161,152,
-        133,153,0];
-        Palette();
-}
-
-function Catppuccin(){
-    theme = [
-        22,19,32,
-        26,24,38,
-        30,30,46,
-        48,45,65,
-        87,82,104,
-        110,108,126,
-        152,139,162,
-        195,186,198,
-        217,224,238,
-        201,203,255,
-        245,224,220,
-        242,205,205,
-        221,182,242,
-        245,194,231,
-        232,162,175,
-        242,143,173,
-        248,189,150,
-        250,227,176,
-        171,233,179,
-        181,232,224,
-        150,205,251,
-        137,220,235];
-        Palette();
-}
-
-function Dracula(){
-    theme = [
-        40,42,54,
-        68,71,90,
-        68,71,90,
-        248,248,242,
-        98,114,164,
-        139,233,253,
-        80,250,123,
-        255,184,108,
-        255,121,198,
-        189,147,249,
-        255,85,85,
-        241,250,140];
-        Palette();
+// Change values from RGB values of each palette, stored in themes.json
+function changeTheme(name){
+    theme = list_of_themes[name];
+    Palette();
 }

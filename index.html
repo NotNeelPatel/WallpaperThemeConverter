@@ -3,13 +3,15 @@
   <head>
     <title>Wallpaper Theme Converter</title>
     <meta charset="UTF-8" />
-    <link rel="stylesheet" href="./assets/WTCstyles.css" />
+    <link rel="stylesheet" href="./assets/style.css" />
     <script src="./assets/convert.js"defer></script>
     </script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
   </head>
   <header>
-    <h1>Wallpaper Theme Converter</h1>
+    <h1 style="margin-right:auto">Wallpaper Theme Converter</h1>
+    <a style="margin-left:auto"
+    href="https://github.com/NotNeelPatel/WallpaperThemeConverter?tab=readme-ov-file#instructions">How To Use This Tool</a>
   </header>
 
   <body>
@@ -20,7 +22,10 @@
     <hr class="main" />
     <br/>
     <div id="main-container">
-      <div><input type="file" id="imageLoader" name="imageLoader" /></div>
+      <div id="drop-zone" ondragover="handleImage();">
+        <label for="imageLoader">Drag/Drop, Paste (Ctrl+V), or</label>
+        <input type="file" id="imageLoader" name="imageLoader"  accept=".jpg, .jpeg, .png, .webp" />
+      </div>
       <br/>
       <canvas id="imageCanvas"></canvas>
 
@@ -35,11 +40,11 @@
         </div>
         <hr class="body"/>
 
-        <button class = "theme-button" type="button" onclick="Gruvbox()">Gruvbox</button>
-        <button class = "theme-button" type="button" onclick="Nord()">Nord</button>
-        <button class = "theme-button" type="button" onclick="Solarized()">Solarized</button>
-        <button class = "theme-button" type="button" onclick="Catppuccin()">Catppuccin</button>
-        <button class = "theme-button" type="button" onclick="Dracula()">Dracula</button>
+        <button class = "theme-button" type="button" onclick="changeTheme('Gruvbox')">Gruvbox</button>
+        <button class = "theme-button" type="button" onclick="changeTheme('Nord')">Nord</button>
+        <button class = "theme-button" type="button" onclick="changeTheme('Solarized')">Solarized</button>
+        <button class = "theme-button" type="button" onclick="changeTheme('Catppuccin')">Catppuccin</button>
+        <button class = "theme-button" type="button" onclick="changeTheme('Dracula')">Dracula</button>
       <br/>
       <hr class="body"/>
 
@@ -61,11 +66,13 @@
     </div>
   </body>
   <footer>
-    <p>2022 Neel Patel</p>
+    <p>2022-2024 Neel Patel</p>
     <ul>
       <a href="https://notneelpatel.github.io">My Website</a>
       <a>|</a>
       <a href="https://github.com/NotNeelPatel/WallpaperThemeConverter">GitHub Repo</a>
+      <a>|</a>
+      <a href="https://notneelpatel.github.io/blog/2022-05-10-wallpaper-theme-converter.html">About Wallpaper Theme Converter</a>
     </ul>
   </footer>
 </html>
