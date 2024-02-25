@@ -96,12 +96,12 @@ button:hover {
     align-items: center;
 }
 
-#imageLoader{
+#image-loader{
     font-family: "Inconsolata", monospace;
     font-size: 1em;
     
 }
-#imageLoader::file-selector-button {
+#image-loader::file-selector-button {
     margin-left: 10px;
     font-family: "Inconsolata", monospace;
     background-color: #333;
@@ -110,7 +110,7 @@ button:hover {
     cursor: pointer;
   }
 
-#imageCanvas {
+#image-canvas {
     border: 3px solid #aaa;
     max-width: 50%;
     display: flex;

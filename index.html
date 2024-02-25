@@ -23,14 +23,14 @@
     <br/>
     <div id="main-container">
       <div id="drop-zone" ondragover="handleImage();">
-        <label for="imageLoader">Drag/Drop, Paste (Ctrl+V), or</label>
-        <input type="file" id="imageLoader" name="imageLoader"  accept=".jpg, .jpeg, .png, .webp" />
+        <label for="image-loader">Drag/Drop, Paste (Ctrl+V), or</label>
+        <input type="file" id="image-loader" name="image-loader"  accept=".jpg, .jpeg, .png, .webp" />
       </div>
       <br/>
-      <canvas id="imageCanvas"></canvas>
+      <canvas id="image-canvas"></canvas>
 
       <div style="display:flex; justify-content: center;">
-        <button class="important-button"  id ="download-button" type="button" onclick="Download()">↓ Download ↓</button>
+        <button class="important-button"  id ="download-button" type="button" onclick="download()">↓ Download ↓</button>
         <button class="important-button" id ="reset-button" type="button" onclick="reset()">Reset Image</button>
       </div>
 
@@ -48,16 +48,16 @@
       <br/>
       <hr class="body"/>
 
-      <button class = "theme-button" id ="custom" type="button" onclick="Custom()"> Custom Theme </button>
+      <button class = "theme-button" id ="custom" type="button" onclick="openCustomMenu()"> Custom Theme </button>
      
       <div id="custom-menu">
-        <button  type="button" onclick="AddColour()">+</button>
-        <button  type="button" onclick="RemoveColour()">-</button>
+        <button  type="button" onclick="addColour()">+</button>
+        <button  type="button" onclick="removeColour()">-</button>
 
         <div id="colours" style="padding: 0.5em; display:block;">
         </div>
         <br/>
-        <button type="button" onclick="Done()">Done</button>
+        <button type="button" onclick="closeCustomMenu()">Done</button>
       </div>
 
       <hr class="body"/>

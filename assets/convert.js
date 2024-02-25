@@ -1,59 +1,30 @@
 // Canvas loading variables
 var imageLoader = document.getElementById('drop-zone');
-
 imageLoader.addEventListener('change', e => {
     handleImage(e.target.files[0])
 });
+
 window.addEventListener('paste', e => {
     handleImage(e.clipboardData.files[0]) 
 });
 
-const dropArea = document.body;
+// Prevent default drag behaviors
+['dragenter', 'dragover', 'dragleave', 'drop'].forEach(e => {
+    document.body.addEventListener(e, preventDefaults, false)
+});
 
-        // Prevent default drag behaviors
-        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-            dropArea.addEventListener(eventName, preventDefaults, false)
-        });
+// Handle dropped files
+document.body.addEventListener('drop', e => {
+    handleImage(e.dataTransfer.files[0])
+});
 
-        // Highlight drop area when item is dragged over it
-        ['dragenter', 'dragover'].forEach(eventName => {
-            dropArea.addEventListener(eventName, highlight, false)
-        });
+// Prevent default drag behaviors
+function preventDefaults(e) {
+    e.preventDefault();
+    e.stopPropagation();
+}
 
-        // Remove highlight when item is dragged out of drop area
-        ['dragleave', 'drop'].forEach(eventName => {
-            dropArea.addEventListener(eventName, unhighlight, false)
-        });
-
-        // Handle dropped files
-        dropArea.addEventListener('drop', handleDrop, false)
-
-        // Prevent default drag behaviors
-        function preventDefaults(event) {
-            event.preventDefault();
-            event.stopPropagation();
-        }
-
-        // Highlight drop area
-        function highlight() {
-            dropArea.classList.add('highlight');
-        }
-
-        // Remove highlight from drop area
-        function unhighlight() {
-            dropArea.classList.remove('highlight');
-        }
-
-        // Handle dropped files
-        function handleDrop(event) {
-            const dt = event.dataTransfer;
-            const files = dt.files;
-
-            handleImage(files[0]);
-        }
-
-
-var canvas = document.getElementById('imageCanvas');
+var canvas = document.getElementById('image-canvas');
 var ctx = canvas.getContext('2d');
 
 
@@ -88,7 +59,6 @@ fetch("./assets/themes.json")
     list_of_themes = data;
 });
 
-
 // Loads image onto canvas
 function handleImage(source){
     ogimage = source;
@@ -116,7 +86,7 @@ function reset(){
 }
 
 // Displays the colour palette
-function Palette(){
+function displayPalette(){
     // Deletes previous colour palette
     if (colour_palette_count != 0){
         for (var i = 0; i < colour_palette_count; i++){
@@ -143,7 +113,7 @@ function Palette(){
 }
 
 // Opens the custom menu 
-function Custom(){
+function openCustomMenu(){
     if (menuVisible == true){
         document.getElementById("custom-menu").style.display = "none";
         menuVisible = false;
@@ -155,7 +125,7 @@ function Custom(){
 }
 
 // Adds a colour swatch when pressed
-function AddColour(){
+function addColour(){
     const colour_node = document.createElement("input");
     colour_node.setAttribute("type","color");
     colour_node.id = ("node" + nodes);
@@ -164,7 +134,7 @@ function AddColour(){
 }
 
 // Removes a colour swatch when pressed
-function RemoveColour(){
+function removeColour(){
     if (nodes > 0) {
         document.getElementById("colours").removeChild(colours_div.lastElementChild);
         nodes--;
@@ -172,7 +142,7 @@ function RemoveColour(){
 }
 
 // When the user is done with their custom theme, the colour data is loaded into the theme array
-function Done(){
+function closeCustomMenu(){
     var hex_colour = "#FFFFFF";
     var hex_parsed = 0;
     var colour_palette = [];
@@ -188,7 +158,7 @@ function Done(){
     theme = colour_palette;
     customMenu.style.display = "none";
     menuVisible = false;
-    Palette();
+    displayPalette();
 }
 
 function initialize(){
@@ -196,18 +166,18 @@ function initialize(){
     loadingScreen.style.visibility = 'visible';
     loadingScreen.style.transition = '0s';
     setTimeout(function(){
-        Start();
+        convertImage();
         loadingScreen.style.transition = '0.5s';
         loadingScreen.style.opacity = '0';
         loadingScreen.style.visibility = 'hidden';
-        },0);
-    }
+    },0);
+}
 /*
 This is the function that processes the image.
 It works by scanning every pixel and finding the nearest colour.
 After finding the nearest colour, it uses that data to reconstruct the image.
 */
-function Start(){ 
+function convertImage(){ 
     downloadButton.style.visibility = 'hidden';
     resetButton.style.visibility = 'hidden';
     // Assigning variables
@@ -252,7 +222,7 @@ function Start(){
 
 
 //Download function. Works on desktop browsers only at the moment.
-function Download(){
+function downloadImage(){
     image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
     var link = document.createElement('a');
     link.download = ("wallpaper-theme-converter.png");
@@ -263,5 +233,5 @@ function Download(){
 // Change values from RGB values of each palette, stored in themes.json
 function changeTheme(name){
     theme = list_of_themes[name];
-    Palette();
+    displayPalette();
 }

@@ -27,3 +27,7 @@ Inspired by [Gruvbox Factory](https://github.com/paulopacitti/gruvbox-factory) a
 4. Press "Convert"
 5. Wait!! It may take a few seconds, especially if you have lower-end hardware. You will know that it is done when you see the "Download" button and "Reset Image" button.
 6. Download the image if you'd like, or if you want to try another palette, press "Reset Image" and repeat steps 3-5.
+
+## How it works
+
+I wrote a blog post in 2022 explaining more about how it works. Check it out: https://notneelpatel.github.io/blog/2022-05-10-wallpaper-theme-converter.html
