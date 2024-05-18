@@ -11,6 +11,7 @@ Adjust the colours to a wallpaper to better match your setup, terminal, and/or I
 - [Solarized](https://github.com/altercation/solarized)
 - [Catppuccin](https://github.com/catppuccin/catppuccin) (Thanks [Marcus](https://github.com/cheezytaco101)!)
 - [Dracula](https://github.com/dracula/dracula-theme)
+- [Everforest](https://github.com/sainnhe/everforest) (Thanks [jn-sena](https://github.com/jn-sena)!)
 - Custom Theme (add your own colours!)
 
 Inspired by [Gruvbox Factory](https://github.com/paulopacitti/gruvbox-factory) and [ImageGoNord](https://github.com/Schrodinger-Hat/ImageGoNord)
