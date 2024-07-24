@@ -223,9 +223,9 @@ function convertImage(){
 
 //Download function. Works on desktop browsers only at the moment.
 function downloadImage(){
-    image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+    image = canvas.toDataURL("image/png");
     var link = document.createElement('a');
-    link.download = ("wallpaper-theme-converter.png");
+    link.download = "wallpaper-theme-converter.png";
     link.href = image;
     link.click();
 }
