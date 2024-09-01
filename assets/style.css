@@ -53,6 +53,11 @@ hr.body {
     max-width: 75%;
 }
 
+.theme-buttons {
+    max-width: 75%;
+    margin: auto;
+}
+
 button {
     font-family: "Inconsolata", monospace;
     background-color: #333;
