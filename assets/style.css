@@ -1,135 +1,199 @@
-@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@600&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Inconsolata&display=swap");
-@import url('https://fonts.googleapis.com/css2?family=PT+Serif&display=swap');
 
 @viewport {
     width: device-width;
     zoom: 1;
 }
 
+:root {
+    --white: #e7e7e7;
+    --light-grey: #aaa;
+    --grey: #777;
+    --blue-grey: #434e54;
+    --dark-grey: #303030;
+    --darkest-grey: #242424;
+    --black: #151515;
+}
+
 h1 {
-    font-family: "PT Serif", serif;
+    font-family: "Inconsolata", serif;
     letter-spacing: 5px;
     word-spacing: 7px;
     font-weight: 100;
     display: inline-table;
 }
 
-h2,
-h3 {
-    font-family: "JetBrains Mono", monospace;
-}
-
 a {
     text-decoration: none;
     text-decoration-line: none;
-    color:white;
+    color: var(--white);
 }
 
 a:hover {
-    color: #aaa
+    color: var(--light-grey);
 }
 
 header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-left: 5%;
-    margin-right: 5%;
+    margin-left: 15vw;
+    margin-right: 15vw;
 }
 
 body {
     font-family: "Inconsolata", monospace;
-    background-color: #000;
-    color: #fff
+    background-color: var(--black);
+    color: var(--white);
 }
 
-hr.main {
-    max-width: 90%;
-    height: 4px;
-}
-
-hr.body {
-    max-width: 75%;
-}
-
-.theme-buttons {
-    max-width: 75%;
-    margin: auto;
+hr {
+    max-width: 70vw;
+    height: 2px;
+    background-color: var(--light-grey);
 }
 
 button {
     font-family: "Inconsolata", monospace;
-    background-color: #333;
-    color: #fff;
-    padding: 0.5em;
-    padding-left: 2.5em;
-    padding-right: 2.5em;
+    color: var(--white);
+    background-color: var(--dark-grey);
+    padding: 0.5em 1em;
     margin: 0.5em;
     cursor: pointer;
+    border-radius: 5px;
+    border: 2px solid var(--light-grey);
+    font-size: 1em;
 }
 
 button:hover {
     background-color: #222;
 }
 
-.important-button {
-    font-size: medium;
-    background-color: #555;
-    color: #fff;
-    border: double;
+.main-button {
+    font-size: 1.3em;
+    background-color: var(--blue-grey);
+    border: 3px solid var(--light-grey);
 }
 
-#main-container {
-    margin-left: 2.5%;
-    margin-right: 2.5%;
-    padding-left: 2.5%;
-    padding-right: 2.5%;
+#download-button,
+#reset-button {
+    visibility: hidden;
 }
 
 #drop-zone {
+    background-color: var(--darkest-grey);
     text-align: center;
-    background: #333;
-    border: dashed 3px white;
-    width: 50%;
-    height: 20%;
+    border: dashed 3px var(--light-grey);
+    width: 42vw;
+    height: 3vw;
     display: flex;
     justify-content: center;
     margin: auto;
-    padding: 1em;
     cursor: pointer;
     align-items: center;
+    padding: 10px;
+    border-radius: 10px;
 }
 
-#image-loader{
+#image-loader {
     font-family: "Inconsolata", monospace;
     font-size: 1em;
-    
 }
+
 #image-loader::file-selector-button {
     margin-left: 10px;
     font-family: "Inconsolata", monospace;
-    background-color: #333;
-    color: #fff;
+    background-color: var(--dark-grey);
+    border-radius: 3px;
+    color: var(--white);
     margin: 0.5em;
     cursor: pointer;
-  }
+}
 
 #image-canvas {
-    border: 3px solid #aaa;
-    max-width: 50%;
+    border: 3px solid var(--light-grey);
+    max-height: 50vh;
+    min-height: 30vh;
     display: flex;
     justify-content: center;
     margin: auto;
 }
 
+.download-buttons {
+    display: flex;
+    justify-content: center;
+    margin: auto;
+}
+
+.menu-container {
+    text-align: center;
+}
+
+#palette {
+    display: flex;
+    justify-content: center;
+    margin: auto;
+    margin-bottom: 1em;
+}
+
+.palette-node {
+    display: inline-block;
+    height: 1em;
+    width: 1em;
+    border: 1px solid #aaa;
+}
+
+.options-container {
+    display: flex;
+    justify-content: center;
+}
+
+.options-container button {
+    margin: 0 1em;
+}
+
+#opt-up {
+    margin: 0;
+    border-radius: 5px 0 0 5px;
+    border-width: 2px 0px 2px 2px;
+}
+
+#opt-down {
+    margin: 0;
+    border-radius: 0px 5px 5px 0px;
+    border-width: 2px 2px 2px 0px;
+}
+
+#theme-select {
+    text-align: center;
+    background-color: var(--dark-grey);
+    color: var(--white);
+    font-family: "Inconsolata", monospace;
+    font-size: 1em;
+    border: 2px solid var(--light-grey);
+    padding: 0.5em;
+    margin: 0;
+}
+
+#theme-select:hover {
+    background-color: var(--darkest-grey);
+}
+
 #custom-menu {
-    border: 3px solid #aaa;
-    width: 50%;
+    border: 2px solid var(--light-grey);
+    border-radius: 10px;
+    width: 42vw;
     display: flex;
     justify-content: center;
     padding: 1em;
     margin: auto;
+}
+
+input[type="color"] {
+    width: 3em;
+    height: 3em;
+    background-color: var(--black);
+    border: none;
 }
 
 #loading-screen {
@@ -140,7 +204,11 @@ button:hover {
     position: fixed;
     text-align: center;
     font-size: xx-large;
-    background-color: rgba(100, 100, 100, 0.8);
+    background-color: rgba(30, 30, 30, 0.8);
+}
+
+#loading-screen p {
+    margin-top: 40vh;
 }
 
 footer {
@@ -152,5 +220,52 @@ footer {
 }
 
 footer a {
-    color: #777
+    color: var(--grey);
+}
+
+@media screen and (max-width: 800px) {
+    header {
+        margin-left: 0vw;
+        margin-right: 0vw;
+    }
+
+    body {
+        margin-left: 8vw;
+        margin-right: 8vw;
+        max-width: 84vw;
+        font-size: 0.9em;
+    }
+
+    hr {
+        max-width: 84vw;
+    }
+
+    #drop-zone {
+        width: 80vw;
+        height: 10vw;
+        font-size: 0.8em;
+    }
+
+    #image-canvas {
+        max-height: 40vh;
+        min-height: 20vh;
+    }
+
+    .download-buttons {
+        flex-direction: column;
+    }
+
+    .options-container {
+        font-size: 0.8em;
+    }
+
+    .options-container button {
+        margin: 0 0.5em;
+        padding: 0.5em 0.5em;
+    }
+
+    .palette-node {
+        height: 0.8em;
+        width: 0.8em;
+    }
 }

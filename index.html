@@ -9,9 +9,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
   </head>
   <header>
-    <h1 style="margin-right:auto">Wallpaper Theme Converter</h1>
-    <a style="margin-left:auto"
-    href="https://github.com/NotNeelPatel/WallpaperThemeConverter?tab=readme-ov-file#instructions">How To Use This Tool</a>
+    <h1>Wallpaper Theme Converter</h1>
+    <a href="https://github.com/NotNeelPatel/WallpaperThemeConverter?tab=readme-ov-file#instructions">How To Use This Tool</a>
   </header>
 
   <body>
@@ -19,67 +18,86 @@
       <p>Loading...</p>
 
     </div>
-    <hr class="main" />
+    <hr />
     <br/>
-    <div id="main-container">
-      <div id="drop-zone" ondragover="handleImage();">
-        <label for="image-loader">Drag/Drop, Paste (Ctrl+V), or</label>
-        <input type="file" id="image-loader" name="image-loader"  accept=".jpg, .jpeg, .png, .webp" />
+      <div>
+        <div id="drop-zone" ondragover="handleImage();">
+          <label for="image-loader">Drag/Drop, Paste (Ctrl+V), or</label>
+          <input type="file" id="image-loader" name="image-loader"  accept=".jpg, .jpeg, .png, .webp" />
+        </div>
       </div>
+
       <br/>
       <canvas id="image-canvas"></canvas>
 
-      <div style="display:flex; justify-content: center;">
-        <button class="important-button"  id ="download-button" type="button" onclick="downloadImage()">↓ Download ↓</button>
-        <button class="important-button" id ="reset-button" type="button" onclick="reset()">Reset Image</button>
+      <div class="download-buttons">
+        <button class="main-button" id="download-button" type="button" onclick="downloadImage()">↓ Download ↓</button>
+        <button class="main-button" id="reset-button" type="button" onclick="reset()">Reset Image</button>
       </div>
 
-      <div style="text-align: center">
-        <h3 id = "loading">Select a theme</h3>
-        <div id="palette" style="height:1em;">
+      <div class="menu-container">
+        <h3>Select a theme</h3>
+        <div id="palette">
         </div>
-        <hr class="body"/>
 
-        <div class="theme-buttons">
-          <button class = "theme-button" type="button" onclick="changeTheme('Gruvbox')">Gruvbox</button>
-          <button class = "theme-button" type="button" onclick="changeTheme('Nord')">Nord</button>
-          <button class = "theme-button" type="button" onclick="changeTheme('Solarized')">Solarized</button>
-          <button class = "theme-button" type="button" onclick="changeTheme('Catppuccin Latte')">Catppuccin Latte</button>
-          <button class = "theme-button" type="button" onclick="changeTheme('Catppuccin Frappe')">Catppuccin Frappe</button>
-          <button class = "theme-button" type="button" onclick="changeTheme('Catppuccin Macchiato')">Catppuccin Macchiato</button>
-          <button class = "theme-button" type="button" onclick="changeTheme('Catppuccin Mocha')">Catppuccin Mocha</button>
-          <button class = "theme-button" type="button" onclick="changeTheme('Dracula')">Dracula</button>
-          <button class = "theme-button" type="button" onclick="changeTheme('Everforest')">Everforest</button>
-          <button class = "theme-button" type="button" onclick="changeTheme('Rose Pine')">Rose Pine</button>
-          <button class = "theme-button" type="button" onclick="changeTheme('Rose Pine Moon')">Rose Pine Moon</button>
-          <button class = "theme-button" type="button" onclick="changeTheme('Rose Pine Dawn')">Rose Pine Dawn</button>
+        <div class="options-container">
+          <button id="opt-up" onclick="scrollTheme(-1)">▲</button>
+
+          <select name="Colour Scheme" id="theme-select">
+            <option value="Gruvbox">Gruvbox</option>
+            <option value="Nord">Nord</option>
+            <option value="Everforest">Everforest</option>
+            <option value="Solarized">Solarized</option>
+            <option value="Dracula">Dracula</option>
+            <option value="Tokyo Night">Tokyo Night</option>
+            <option value="Kanagawa">Kanagawa</option>
+            <!-- For Developers: Add your theme here (example below): 
+            <option value="Theme Name">Theme Name</option>
+            -->
+            <optgroup label="Catppuccin">
+              <option value="Catppuccin Latte">Catppuccin Latte</option>
+              <option value="Catppuccin Frappe">Catppuccin Frappe</option>
+              <option value="Catppuccin Macchiato">Catppuccin Macchiato</option>
+              <option value="Catppuccin Mocha">Catppuccin Mocha</option>
+            </optgroup>
+            <optgroup label="Rose Pine">
+              <option value="Rose Pine">Rose Pine</option>
+              <option value="Rose Pine Moon">Rose Pine Moon</option>
+              <option value="Rose Pine Dawn">Rose Pine Dawn</option>
+            </optgroup>
+            <!-- For Developers: Add grouped themes here under an optgroup (example below):
+             <optgroup label="Group Name">
+              <option value="Theme Name">Theme Name</option>
+              <option value="Theme Name">Theme Name</option>
+              <option value="Theme Name">Theme Name</option>
+            -->
+          </select>
+
+          <button id="opt-down" onclick="scrollTheme(1)">▼</button>
+          <button id="custom-theme-button" onclick="openCustomMenu()"> + Custom Theme </button>
         </div>
+
       <br/>
-      <hr class="body"/>
 
-      <button class = "theme-button" id ="custom" type="button" onclick="openCustomMenu()"> Custom Theme </button>
-     
       <div id="custom-menu">
-        <button  type="button" onclick="addColour()">+</button>
-        <button  type="button" onclick="removeColour()">-</button>
-
-        <div id="colours" style="padding: 0.5em; display:block;">
+        <button onclick="addColour()">+</button>
+        <button onclick="removeColour()">-</button>
+        <div id="colours">
         </div>
-        <br/>
-        <button type="button" onclick="closeCustomMenu()">Done</button>
       </div>
 
-      <hr class="body"/>
-        <button class="important-button" id="convert" type="button" onclick="initialize()">Convert</button>
+        <button class="main-button" id="convert" type="button" onclick="initialize()">Convert</button>
       </div>
-    </div>
+
   </body>
   <footer>
-    <p>2022-2024 Neel Patel</p>
+    <p>© 2022-2025 Neel Patel</p>
     <ul>
       <a href="https://notneelpatel.github.io">My Website</a>
       <a>|</a>
       <a href="https://github.com/NotNeelPatel/WallpaperThemeConverter">GitHub Repo</a>
+      <a>|</a>
+      <a href="https://github.com/NotNeelPatel/WallpaperThemeConverter/graphs/contributors">List of Contributors</a>
       <a>|</a>
       <a href="https://notneelpatel.github.io/blog/2022-05-10-wallpaper-theme-converter.html">About Wallpaper Theme Converter</a>
     </ul>
