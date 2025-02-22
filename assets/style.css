@@ -21,6 +21,7 @@ h1 {
     word-spacing: 7px;
     font-weight: 100;
     display: inline-table;
+    margin: 0.3em 0;
 }
 
 a {
@@ -66,7 +67,7 @@ button {
 }
 
 button:hover {
-    background-color: #222;
+    background-color: var(--darkest-grey);
 }
 
 .main-button {
@@ -78,6 +79,49 @@ button:hover {
 #download-button,
 #reset-button {
     visibility: hidden;
+}
+
+.dither-options {
+    margin: auto;
+    padding: 0.5em;
+    text-align: center;
+    width: fit-content;
+    user-select: none;
+}
+
+input[type="checkbox"] {
+    display: none;
+    --webkit-appearance: none;
+    width: 1.1em;
+    height: 1.1em;
+    margin: 0.5em;
+    cursor: pointer;
+    font-size: 1em;
+    display: inline;
+}
+
+input[type="checkbox"]:checked {
+    accent-color: var(--blue-grey);
+}
+
+#dither-checkbox-label {
+    font-size: 1em;
+}
+
+.tooltip-text {
+    display: none;
+    position: absolute;
+    background-color: var(--dark-grey);
+    color: var(--white);
+    border-radius: 5px;
+    padding: 0.5em;
+    z-index: 1;
+    font-size: 0.8em;
+    left: 43vw;
+}
+
+.dither-options:hover .tooltip-text {
+    display: block;
 }
 
 #drop-zone {
@@ -106,8 +150,13 @@ button:hover {
     background-color: var(--dark-grey);
     border-radius: 3px;
     color: var(--white);
+    border: 2px solid var(--light-grey);
     margin: 0.5em;
     cursor: pointer;
+}
+
+#image-loader::file-selector-button:hover {
+    background-color: var(--darkest-grey);
 }
 
 #image-canvas {
@@ -140,7 +189,7 @@ button:hover {
     display: inline-block;
     height: 1em;
     width: 1em;
-    border: 1px solid #aaa;
+    border: 1px solid var(--light-grey);
 }
 
 .options-container {
@@ -205,6 +254,7 @@ input[type="color"] {
     text-align: center;
     font-size: xx-large;
     background-color: rgba(30, 30, 30, 0.8);
+    transition: 0.5s;
 }
 
 #loading-screen p {
@@ -224,6 +274,10 @@ footer a {
 }
 
 @media screen and (max-width: 800px) {
+    h1 {
+        font-size: 1.5em;
+    }
+
     header {
         margin-left: 0vw;
         margin-right: 0vw;
@@ -247,8 +301,8 @@ footer a {
     }
 
     #image-canvas {
-        max-height: 40vh;
-        min-height: 20vh;
+        width: 84vw;
+        min-height: 10vw;
     }
 
     .download-buttons {
@@ -267,5 +321,9 @@ footer a {
     .palette-node {
         height: 0.8em;
         width: 0.8em;
+    }
+
+    #custom-menu {
+        width: auto;
     }
 }

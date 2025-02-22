@@ -11,6 +11,7 @@ window.addEventListener("paste", (e) => {
 // Prevent default drag behaviors
 ["dragenter", "dragover", "dragleave", "drop"].forEach((e) => {
     document.body.addEventListener(e, preventDefaults, false);
+    imageLoader.style.height = "12vh";
 });
 
 // Handle dropped files
@@ -49,6 +50,7 @@ var colour_palette_count = 0;
 var menuVisible = false;
 var list_of_themes;
 var themes_keys;
+var dithering = false;
 
 // Fetch data from themes.json
 fetch("./assets/themes.json")
@@ -61,6 +63,7 @@ fetch("./assets/themes.json")
 
 // Loads image onto canvas
 function handleImage(source) {
+    imageLoader.style.height = "1vh";
     ogimage = source;
     var reader = new FileReader();
 
@@ -166,6 +169,11 @@ function createCustomPalette() {
     displayPalette();
 }
 
+function dither() {
+    dithering = !dithering;
+    document.getElementById("dither-checkbox").checked = dithering;
+}
+
 function initialize() {
     if (theme.length == 0) {
         scrollTheme();
@@ -173,21 +181,42 @@ function initialize() {
     if (customMenu.style.display === "block") {
         createCustomPalette();
     }
-    loadingScreen.style.opacity = "100";
     loadingScreen.style.visibility = "visible";
-    loadingScreen.style.transition = "0s";
+    loadingScreen.style.opacity = "100";
+    loadingScreen.style.display = "block";
     setTimeout(function () {
         convertImage();
-        loadingScreen.style.transition = "0.5s";
         loadingScreen.style.opacity = "0";
         loadingScreen.style.visibility = "hidden";
-    }, 0);
+    }, 100);
+}
+
+function nearestColour(targetColour) {
+    let minDistance = Infinity;
+    let closestColor = theme[0];
+
+    for (let i = 0; i < theme.length; i += 3) {
+        let color = [theme[i], theme[i + 1], theme[i + 2]];
+        // Euclidean distance in RGB space
+        let distance = Math.sqrt(
+            Math.pow(targetColour[0] - color[0], 2) +
+                Math.pow(targetColour[1] - color[1], 2) +
+                Math.pow(targetColour[2] - color[2], 2)
+        );
+
+        if (distance < minDistance) {
+            minDistance = distance;
+            closestColor = color;
+        }
+    }
+    return closestColor;
 }
 
 /*
 This is the function that processes the image.
 It works by scanning every pixel and finding the nearest colour.
 After finding the nearest colour, it uses that data to reconstruct the image.
+If we are dithering, we calculate the quantization error and distribute it using the Sierra Lite kernel.
 */
 function convertImage() {
     downloadButton.style.visibility = "hidden";
@@ -195,37 +224,52 @@ function convertImage() {
     // Assigning variables
     var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
     var pixels = imageData.data;
-    var numPixels = pixels.length;
-    var lens = [];
-    var minimum = 0;
-    var x = 0;
 
-    // For every pixel in the image
-    for (var i = 0; i < numPixels; i += 4) {
-        minimum = 0;
-        // For the amount of colours there are in the theme
-        for (var j = 0; j < theme.length; j += 3) {
-            // 3d distance formula
-            lens[x] = Math.sqrt(
-                Math.pow(pixels[i] - theme[j], 2) +
-                    Math.pow(pixels[i + 1] - theme[j + 1], 2) +
-                    Math.pow(pixels[i + 2] - theme[j + 2], 2)
-            );
-            x += 1;
-        }
-        x = 0;
-        // Sort to find the smallest value (closest distance)
-        for (var k = 1; k < lens.length; k++) {
-            if (lens[k] < lens[minimum]) {
-                minimum = k;
+    for (let y = 0; y < canvas.height; y++) {
+        for (let x = 0; x < canvas.width; x++) {
+            const index = (y * canvas.width + x) * 4;
+
+            // Get the original pixel colour
+            let oldPixel = [
+                pixels[index],
+                pixels[index + 1],
+                pixels[index + 2],
+            ];
+
+            // Find the closest color from the palette
+            let newPixel = nearestColour(oldPixel);
+
+            // Replace the pixel with the new colour
+            pixels[index] = newPixel[0];
+            pixels[index + 1] = newPixel[1];
+            pixels[index + 2] = newPixel[2];
+
+            if (dithering) {
+                // Calculate quantization error
+                let quantError = [
+                    oldPixel[0] - newPixel[0],
+                    oldPixel[1] - newPixel[1],
+                    oldPixel[2] - newPixel[2],
+                ];
+
+                // Distribute the error using Sierra Lite kernel
+                if (x + 1 < canvas.width) {
+                    const rightIndex = index + 4;
+                    pixels[rightIndex] += (quantError[0] * 1) / 2;
+                    pixels[rightIndex + 1] += (quantError[1] * 1) / 2;
+                    pixels[rightIndex + 2] += (quantError[2] * 1) / 2;
+                }
+
+                if (y + 1 < canvas.height) {
+                    const belowIndex = index + canvas.width * 4;
+                    pixels[belowIndex] += (quantError[0] * 1) / 2;
+                    pixels[belowIndex + 1] += (quantError[1] * 1) / 2;
+                    pixels[belowIndex + 2] += (quantError[2] * 1) / 2;
+                }
             }
         }
-
-        // Assign the R,G, and B values based on the smallest value
-        for (var k = 0; k < 3; k++) {
-            pixels[i + k] = theme[minimum * 3 + k];
-        }
     }
+
     // Reconstruct the image and make the download/reset buttons visible
     ctx.putImageData(imageData, 0, 0);
     downloadButton.style.visibility = "visible";

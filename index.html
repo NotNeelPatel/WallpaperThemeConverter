@@ -16,7 +16,6 @@
   <body>
     <div id="loading-screen">
       <p>Loading...</p>
-
     </div>
     <hr />
     <br/>
@@ -76,16 +75,17 @@
           <button id="opt-down" onclick="scrollTheme(1)">▼</button>
           <button id="custom-theme-button" onclick="openCustomMenu()"> + Custom Theme </button>
         </div>
-
-      <br/>
-
+        <div class="dither-options" onclick="dither()">
+          <input type="checkbox" id="dither-checkbox" />
+          <label id="dither-checkbox-label" for="checkbox">More Accurate Colours</label>
+          <span class="tooltip-text">Adds dithering to reduce colour-banding</span>
+        </div>
       <div id="custom-menu">
         <button onclick="addColour()">+</button>
         <button onclick="removeColour()">-</button>
         <div id="colours">
         </div>
       </div>
-
         <button class="main-button" id="convert" type="button" onclick="initialize()">Convert</button>
       </div>
 
