@@ -254,7 +254,6 @@ input[type="color"] {
     text-align: center;
     font-size: xx-large;
     background-color: rgba(30, 30, 30, 0.8);
-    transition: 0.5s;
 }
 
 #loading-screen p {

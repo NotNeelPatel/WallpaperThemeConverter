@@ -181,14 +181,15 @@ function initialize() {
     if (customMenu.style.display === "block") {
         createCustomPalette();
     }
-    loadingScreen.style.visibility = "visible";
     loadingScreen.style.opacity = "100";
-    loadingScreen.style.display = "block";
+    loadingScreen.style.visibility = "visible";
+    loadingScreen.style.transition = "0s";
     setTimeout(function () {
         convertImage();
+        loadingScreen.style.transition = "0.5s";
         loadingScreen.style.opacity = "0";
         loadingScreen.style.visibility = "hidden";
-    }, 100);
+    }, 0);
 }
 
 function nearestColour(targetColour) {
