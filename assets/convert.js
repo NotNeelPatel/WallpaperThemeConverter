@@ -28,9 +28,10 @@ function preventDefaults(e) {
 var canvas = document.getElementById("image-canvas");
 var ctx = canvas.getContext("2d");
 
-// Buttons and divs that get hidden/change
+// Buttons and divs that get hidden/changed
 const downloadButton = document.getElementById("download-button");
 const resetButton = document.getElementById("reset-button");
+const convertButton = document.getElementById("convert");
 const customMenu = document.getElementById("custom-menu");
 const colours_div = document.getElementById("colours");
 const palette_div = document.getElementById("palette");
@@ -179,6 +180,7 @@ function initialize() {
     if (customMenu.style.display === "block") {
         createCustomPalette();
     }
+
     setTimeout(function () {
         convertImage();
     }, 0);
@@ -206,6 +208,7 @@ function nearestColour(targetColour, colourScheme) {
 }
 
 function convertImage() {
+    convertButton.disabled = true;
     downloadButton.style.visibility = "hidden";
     resetButton.style.visibility = "hidden";
 
@@ -276,6 +279,7 @@ function convertImage() {
             setTimeout(processBatch, 0); // wait until ready for next batch
         } else {
             // Processing complete
+            convertButton.disabled = false;
             downloadButton.style.visibility = "visible";
             resetButton.style.visibility = "visible";
         }
