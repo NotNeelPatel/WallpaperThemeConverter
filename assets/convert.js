@@ -32,14 +32,12 @@ var ctx = canvas.getContext("2d");
 const downloadButton = document.getElementById("download-button");
 const resetButton = document.getElementById("reset-button");
 const customMenu = document.getElementById("custom-menu");
-const loadingScreen = document.getElementById("loading-screen");
 const colours_div = document.getElementById("colours");
 const palette_div = document.getElementById("palette");
 const menu = document.getElementById("theme-select");
 
 // Changing visibility of download/reset buttons, image canvas, and the menu for custom theme
 canvas.style.visibility = "hidden";
-loadingScreen.style.visibility = "hidden";
 customMenu.style.display = "none";
 
 // Global variables
@@ -181,23 +179,17 @@ function initialize() {
     if (customMenu.style.display === "block") {
         createCustomPalette();
     }
-    loadingScreen.style.opacity = "100";
-    loadingScreen.style.visibility = "visible";
-    loadingScreen.style.transition = "0s";
     setTimeout(function () {
         convertImage();
-        loadingScreen.style.transition = "0.5s";
-        loadingScreen.style.opacity = "0";
-        loadingScreen.style.visibility = "hidden";
     }, 0);
 }
 
-function nearestColour(targetColour) {
+function nearestColour(targetColour, colourScheme) {
     let minDistance = Infinity;
-    let closestColor = theme[0];
+    let closestColor = colourScheme[0];
 
-    for (let i = 0; i < theme.length; i += 3) {
-        let color = [theme[i], theme[i + 1], theme[i + 2]];
+    for (let i = 0; i < colourScheme.length; i += 3) {
+        let color = [colourScheme[i], colourScheme[i + 1], colourScheme[i + 2]];
         // Euclidean distance in RGB space
         let distance = Math.sqrt(
             Math.pow(targetColour[0] - color[0], 2) +
@@ -213,69 +205,83 @@ function nearestColour(targetColour) {
     return closestColor;
 }
 
-/*
-This is the function that processes the image.
-It works by scanning every pixel and finding the nearest colour.
-After finding the nearest colour, it uses that data to reconstruct the image.
-If we are dithering, we calculate the quantization error and distribute it using the Sierra Lite kernel.
-*/
 function convertImage() {
     downloadButton.style.visibility = "hidden";
     resetButton.style.visibility = "hidden";
-    // Assigning variables
+
     var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
     var pixels = imageData.data;
+    // Avoid changing of theme mid-conversion
+    let colourScheme = theme;
+    let ditheringValue = dithering;
+    let y = 0; // Start processing from the first row
+    var batchSize = 0;
+    // Make loading slightly faster on mobile
+    if (window.innerWidth > 800){
+        batchSize = Math.floor(canvas.height / 16)
+    } else {
+        batchSize = Math.floor(canvas.height / 10)
+    }
 
-    for (let y = 0; y < canvas.height; y++) {
-        for (let x = 0; x < canvas.width; x++) {
-            const index = (y * canvas.width + x) * 4;
+    // Load by chunk
+    function processBatch() {
+        let maxY = Math.min(y + batchSize, canvas.height); // Limit processing to batch size
 
-            // Get the original pixel colour
-            let oldPixel = [
-                pixels[index],
-                pixels[index + 1],
-                pixels[index + 2],
-            ];
+        for (; y < maxY; y++) {
+            for (let x = 0; x < canvas.width; x++) {
+                const index = (y * canvas.width + x) * 4;
 
-            // Find the closest color from the palette
-            let newPixel = nearestColour(oldPixel);
+                // Get the original pixel colour
+                let oldPixel = [pixels[index], pixels[index + 1], pixels[index + 2]];
 
-            // Replace the pixel with the new colour
-            pixels[index] = newPixel[0];
-            pixels[index + 1] = newPixel[1];
-            pixels[index + 2] = newPixel[2];
+                // Find the closest color from the palette
+                let newPixel = nearestColour(oldPixel, colourScheme);
 
-            if (dithering) {
-                // Calculate quantization error
-                let quantError = [
-                    oldPixel[0] - newPixel[0],
-                    oldPixel[1] - newPixel[1],
-                    oldPixel[2] - newPixel[2],
-                ];
+                // Replace the pixel with the new colour
+                pixels[index] = newPixel[0];
+                pixels[index + 1] = newPixel[1];
+                pixels[index + 2] = newPixel[2];
 
-                // Distribute the error using Sierra Lite kernel
-                if (x + 1 < canvas.width) {
-                    const rightIndex = index + 4;
-                    pixels[rightIndex] += (quantError[0] * 1) / 2;
-                    pixels[rightIndex + 1] += (quantError[1] * 1) / 2;
-                    pixels[rightIndex + 2] += (quantError[2] * 1) / 2;
-                }
+                if (ditheringValue) {
+                    // Calculate quantization error
+                    let quantError = [
+                        oldPixel[0] - newPixel[0],
+                        oldPixel[1] - newPixel[1],
+                        oldPixel[2] - newPixel[2],
+                    ];
 
-                if (y + 1 < canvas.height) {
-                    const belowIndex = index + canvas.width * 4;
-                    pixels[belowIndex] += (quantError[0] * 1) / 2;
-                    pixels[belowIndex + 1] += (quantError[1] * 1) / 2;
-                    pixels[belowIndex + 2] += (quantError[2] * 1) / 2;
+                    // Distribute the error using Sierra Lite kernel
+                    if (x + 1 < canvas.width) {
+                        const rightIndex = index + 4;
+                        pixels[rightIndex] += (quantError[0] * 1) / 2;
+                        pixels[rightIndex + 1] += (quantError[1] * 1) / 2;
+                        pixels[rightIndex + 2] += (quantError[2] * 1) / 2;
+                    }
+
+                    if (y + 1 < canvas.height) {
+                        const belowIndex = index + canvas.width * 4;
+                        pixels[belowIndex] += (quantError[0] * 1) / 2;
+                        pixels[belowIndex + 1] += (quantError[1] * 1) / 2;
+                        pixels[belowIndex + 2] += (quantError[2] * 1) / 2;
+                    }
                 }
             }
         }
+
+        // Update the canvas after processing the batch
+        ctx.putImageData(imageData, 0, 0);
+
+        if (y < canvas.height) {
+            // Continue processing the next batch
+            setTimeout(processBatch, 0); // wait until ready for next batch
+        } else {
+            // Processing complete
+            downloadButton.style.visibility = "visible";
+            resetButton.style.visibility = "visible";
+        }
     }
 
-    // Reconstruct the image and make the download/reset buttons visible
-    ctx.putImageData(imageData, 0, 0);
-    downloadButton.style.visibility = "visible";
-    resetButton.style.visibility = "visible";
-    loadingScreen.style.visibility = "hidden";
+    processBatch(); // Start the processing loop
 }
 
 // Download function
