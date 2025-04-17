@@ -1,0 +1,182 @@
+/* Theme variables for website styling */
+
+/* Default theme (dark) */
+:root {
+  /* Default colors */
+  --bg-primary: #151515;
+  --bg-secondary: #242424;
+  --bg-tertiary: #303030;
+  --accent: #434e54;
+  --fg-primary: #e7e7e7;
+  --fg-secondary: #aaa;
+  --fg-tertiary: #777;
+  --border-color: #aaa;
+}
+
+/* Gruvbox */
+.theme-gruvbox {
+  --bg-primary: #282828;
+  --bg-secondary: #3c3836;
+  --bg-tertiary: #504945;
+  --accent: #665c54;
+  --fg-primary: #ebdbb2;
+  --fg-secondary: #d5c4a1;
+  --fg-tertiary: #bdae93;
+  --border-color: #bdae93;
+}
+
+/* Nord */
+.theme-nord {
+  --bg-primary: #2e3440;
+  --bg-secondary: #3b4252;
+  --bg-tertiary: #434c5e;
+  --accent: #4c566a;
+  --fg-primary: #eceff4;
+  --fg-secondary: #e5e9f0;
+  --fg-tertiary: #d8dee9;
+  --border-color: #d8dee9;
+}
+
+/* Everforest */
+.theme-everforest {
+  --bg-primary: #232a2e;
+  --bg-secondary: #2d353b;
+  --bg-tertiary: #343f44;
+  --accent: #475258;
+  --fg-primary: #d3c6aa;
+  --fg-secondary: #b9c0ab;
+  --fg-tertiary: #a7b095;
+  --border-color: #a7b095;
+}
+
+/* Solarized */
+.theme-solarized {
+  --bg-primary: #002b36;
+  --bg-secondary: #073642;
+  --bg-tertiary: #586e75;
+  --accent: #657b83;
+  --fg-primary: #fdf6e3;
+  --fg-secondary: #eee8d5;
+  --fg-tertiary: #93a1a1;
+  --border-color: #93a1a1;
+}
+
+/* Dracula */
+.theme-dracula {
+  --bg-primary: #282a36;
+  --bg-secondary: #44475a;
+  --bg-tertiary: #6272a4;
+  --accent: #6272a4;
+  --fg-primary: #f8f8f2;
+  --fg-secondary: #f8f8f2;
+  --fg-tertiary: #bfbfbf;
+  --border-color: #6272a4;
+}
+
+/* Tokyo Night */
+.theme-tokyo-night {
+  --bg-primary: #1a1b26;
+  --bg-secondary: #24283b;
+  --bg-tertiary: #414868;
+  --accent: #565f89;
+  --fg-primary: #c0caf5;
+  --fg-secondary: #a9b1d6;
+  --fg-tertiary: #9aa5ce;
+  --border-color: #9aa5ce;
+}
+
+/* Kanagawa */
+.theme-kanagawa {
+  --bg-primary: #1f1f2d;
+  --bg-secondary: #2a2a37;
+  --bg-tertiary: #363646;
+  --accent: #54546d;
+  --fg-primary: #dcd7ba;
+  --fg-secondary: #c8c093;
+  --fg-tertiary: #a6a089;
+  --border-color: #a6a089;
+}
+
+/* Catppuccin Latte */
+.theme-catppuccin-latte {
+  --bg-primary: #eff1f5;
+  --bg-secondary: #e6e9ef;
+  --bg-tertiary: #ccd0da;
+  --accent: #bcc0cc;
+  --fg-primary: #4c4f69;
+  --fg-secondary: #5c5f77;
+  --fg-tertiary: #6c6f85;
+  --border-color: #8c8fa1;
+}
+
+/* Catppuccin Frappe */
+.theme-catppuccin-frappe {
+  --bg-primary: #303446;
+  --bg-secondary: #292c3c;
+  --bg-tertiary: #414559;
+  --accent: #51576d;
+  --fg-primary: #c6d0f5;
+  --fg-secondary: #b5bfe2;
+  --fg-tertiary: #a5adce;
+  --border-color: #8caaee;
+}
+
+/* Catppuccin Macchiato */
+.theme-catppuccin-macchiato {
+  --bg-primary: #24273a;
+  --bg-secondary: #1e2030;
+  --bg-tertiary: #363a4f;
+  --accent: #494d64;
+  --fg-primary: #cad3f5;
+  --fg-secondary: #b8c0e0;
+  --fg-tertiary: #a5adcb;
+  --border-color: #8aadf4;
+}
+
+/* Catppuccin Mocha */
+.theme-catppuccin-mocha {
+  --bg-primary: #1e1e2e;
+  --bg-secondary: #181825;
+  --bg-tertiary: #313244;
+  --accent: #45475a;
+  --fg-primary: #cdd6f4;
+  --fg-secondary: #bac2de;
+  --fg-tertiary: #a6adc8;
+  --border-color: #89b4fa;
+}
+
+/* Rose Pine */
+.theme-rose-pine {
+  --bg-primary: #191724;
+  --bg-secondary: #1f1d2e;
+  --bg-tertiary: #26233a;
+  --accent: #6e6a86;
+  --fg-primary: #e0def4;
+  --fg-secondary: #e0def4;
+  --fg-tertiary: #908caa;
+  --border-color: #908caa;
+}
+
+/* Rose Pine Moon */
+.theme-rose-pine-moon {
+  --bg-primary: #232136;
+  --bg-secondary: #2a273f;
+  --bg-tertiary: #393552;
+  --accent: #6e6a86;
+  --fg-primary: #e0def4;
+  --fg-secondary: #e0def4;
+  --fg-tertiary: #908caa;
+  --border-color: #908caa;
+}
+
+/* Rose Pine Dawn */
+.theme-rose-pine-dawn {
+  --bg-primary: #faf4ed;
+  --bg-secondary: #fffaf3;
+  --bg-tertiary: #f2e9e1;
+  --accent: #9893a5;
+  --fg-primary: #575279;
+  --fg-secondary: #6e6a86;
+  --fg-tertiary: #797593;
+  --border-color: #797593;
+}

@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Inconsolata&display=swap");
+@import url("./theme-variables.css");
 
 @viewport {
     width: device-width;
@@ -6,13 +7,14 @@
 }
 
 :root {
-    --white: #e7e7e7;
-    --light-grey: #aaa;
-    --grey: #777;
-    --blue-grey: #434e54;
-    --dark-grey: #303030;
-    --darkest-grey: #242424;
-    --black: #151515;
+    /* Legacy variables for backward compatibility */
+    --white: var(--fg-primary);
+    --light-grey: var(--fg-secondary);
+    --grey: var(--fg-tertiary);
+    --blue-grey: var(--accent);
+    --dark-grey: var(--bg-tertiary);
+    --darkest-grey: var(--bg-secondary);
+    --black: var(--bg-primary);
 }
 
 h1 {
@@ -44,36 +46,40 @@ header {
 
 body {
     font-family: "Inconsolata", monospace;
-    background-color: var(--black);
-    color: var(--white);
+    background-color: var(--bg-primary);
+    color: var(--fg-primary);
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 hr {
     max-width: 70vw;
     height: 2px;
-    background-color: var(--light-grey);
+    background-color: var(--fg-secondary);
+    transition: background-color 0.3s ease;
 }
 
 button {
     font-family: "Inconsolata", monospace;
-    color: var(--white);
-    background-color: var(--dark-grey);
+    color: var(--fg-primary);
+    background-color: var(--bg-tertiary);
     padding: 0.5em 1em;
     margin: 0.5em;
     cursor: pointer;
     border-radius: 5px;
-    border: 2px solid var(--light-grey);
+    border: 2px solid var(--fg-secondary);
     font-size: 1em;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
 button:hover {
-    background-color: var(--darkest-grey);
+    background-color: var(--bg-secondary);
 }
 
 .main-button {
     font-size: 1.3em;
-    background-color: var(--blue-grey);
-    border: 3px solid var(--light-grey);
+    background-color: var(--accent);
+    border: 3px solid var(--fg-secondary);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 #download-button,
@@ -101,7 +107,7 @@ input[type="checkbox"] {
 }
 
 input[type="checkbox"]:checked {
-    accent-color: var(--blue-grey);
+    accent-color: var(--accent);
 }
 
 #dither-checkbox-label {
@@ -111,13 +117,14 @@ input[type="checkbox"]:checked {
 .tooltip-text {
     display: none;
     position: absolute;
-    background-color: var(--dark-grey);
-    color: var(--white);
+    background-color: var(--bg-tertiary);
+    color: var(--fg-primary);
     border-radius: 5px;
     padding: 0.5em;
     z-index: 1;
     font-size: 0.8em;
     left: 43vw;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .dither-options:hover .tooltip-text {
@@ -125,9 +132,9 @@ input[type="checkbox"]:checked {
 }
 
 #drop-zone {
-    background-color: var(--darkest-grey);
+    background-color: var(--bg-secondary);
     text-align: center;
-    border: dashed 3px var(--light-grey);
+    border: dashed 3px var(--fg-secondary);
     width: 42vw;
     height: 3vw;
     display: flex;
@@ -137,6 +144,7 @@ input[type="checkbox"]:checked {
     align-items: center;
     padding: 10px;
     border-radius: 10px;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 #image-loader {
@@ -147,25 +155,27 @@ input[type="checkbox"]:checked {
 #image-loader::file-selector-button {
     margin-left: 10px;
     font-family: "Inconsolata", monospace;
-    background-color: var(--dark-grey);
+    background-color: var(--bg-tertiary);
     border-radius: 3px;
-    color: var(--white);
-    border: 2px solid var(--light-grey);
+    color: var(--fg-primary);
+    border: 2px solid var(--fg-secondary);
     margin: 0.5em;
     cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
 #image-loader::file-selector-button:hover {
-    background-color: var(--darkest-grey);
+    background-color: var(--bg-secondary);
 }
 
 #image-canvas {
-    border: 3px solid var(--light-grey);
+    border: 3px solid var(--fg-secondary);
     max-height: 50vh;
     min-height: 30vh;
     display: flex;
     justify-content: center;
     margin: auto;
+    transition: border-color 0.3s ease;
 }
 
 .download-buttons {
@@ -189,7 +199,8 @@ input[type="checkbox"]:checked {
     display: inline-block;
     height: 1em;
     width: 1em;
-    border: 1px solid var(--light-grey);
+    border: 1px solid var(--fg-secondary);
+    transition: border-color 0.3s ease;
 }
 
 .options-container {
@@ -215,34 +226,37 @@ input[type="checkbox"]:checked {
 
 #theme-select {
     text-align: center;
-    background-color: var(--dark-grey);
-    color: var(--white);
+    background-color: var(--bg-tertiary);
+    color: var(--fg-primary);
     font-family: "Inconsolata", monospace;
     font-size: 1em;
-    border: 2px solid var(--light-grey);
+    border: 2px solid var(--fg-secondary);
     padding: 0.5em;
     margin: 0;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
 #theme-select:hover {
-    background-color: var(--darkest-grey);
+    background-color: var(--bg-secondary);
 }
 
 #custom-menu {
-    border: 2px solid var(--light-grey);
+    border: 2px solid var(--fg-secondary);
     border-radius: 10px;
     width: 42vw;
     display: flex;
     justify-content: center;
     padding: 1em;
     margin: auto;
+    transition: border-color 0.3s ease;
 }
 
 input[type="color"] {
     width: 3em;
     height: 3em;
-    background-color: var(--black);
+    background-color: var(--bg-primary);
     border: none;
+    transition: background-color 0.3s ease;
 }
 
 
@@ -259,7 +273,8 @@ footer {
 }
 
 footer a {
-    color: var(--grey);
+    color: var(--fg-tertiary);
+    transition: color 0.3s ease;
 }
 
 @media screen and (max-width: 800px) {
