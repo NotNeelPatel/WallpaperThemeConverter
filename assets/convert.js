@@ -58,6 +58,8 @@ fetch("./assets/themes.json")
         list_of_themes = data;
         themes_keys = Object.keys(list_of_themes);
         scrollTheme();
+        // Apply the initial theme to the website
+        applyWebsiteTheme(menu.value);
     });
 
 // Loads image onto canvas
@@ -166,6 +168,37 @@ function createCustomPalette() {
 
     theme = colour_palette;
     displayPalette();
+
+    // Apply custom theme to website
+    applyCustomWebsiteTheme(colour_palette);
+}
+
+// Apply a custom theme to the website
+function applyCustomWebsiteTheme(colourPalette) {
+    // Remove all theme classes from body
+    document.body.classList.forEach(className => {
+        if (className.startsWith('theme-')) {
+            document.body.classList.remove(className);
+        }
+    });
+
+    // If we have enough colors in the palette, create a custom theme
+    if (colourPalette.length >= 9) { // At least 3 colors (9 values)
+        // Get primary background and foreground colors
+        const bgColor = `rgb(${colourPalette[0]}, ${colourPalette[1]}, ${colourPalette[2]})`;
+        const bgSecondary = `rgb(${colourPalette[3]}, ${colourPalette[4]}, ${colourPalette[5]})`;
+        const fgColor = `rgb(${colourPalette[6]}, ${colourPalette[7]}, ${colourPalette[8]})`;
+
+        // Apply custom colors directly to CSS variables
+        document.documentElement.style.setProperty('--bg-primary', bgColor);
+        document.documentElement.style.setProperty('--bg-secondary', bgSecondary);
+        document.documentElement.style.setProperty('--bg-tertiary', bgSecondary);
+        document.documentElement.style.setProperty('--fg-primary', fgColor);
+        document.documentElement.style.setProperty('--fg-secondary', fgColor);
+        document.documentElement.style.setProperty('--fg-tertiary', fgColor);
+        document.documentElement.style.setProperty('--accent', bgSecondary);
+        document.documentElement.style.setProperty('--border-color', fgColor);
+    }
 }
 
 function dither() {
@@ -297,6 +330,45 @@ function downloadImage() {
     link.click();
 }
 
+// Apply the selected theme to the website
+function applyWebsiteTheme(themeName) {
+    // Remove all theme classes from body
+    document.body.classList.forEach(className => {
+        if (className.startsWith('theme-')) {
+            document.body.classList.remove(className);
+        }
+    });
+
+    // Reset any custom CSS properties that might have been set
+    resetCustomCSSProperties();
+
+    // Convert theme name to CSS class name (lowercase, replace spaces with hyphens)
+    const themeClass = 'theme-' + themeName.toLowerCase().replace(/ /g, '-');
+
+    // Add the new theme class to body
+    document.body.classList.add(themeClass);
+}
+
+// Reset custom CSS properties that might have been set by custom themes
+function resetCustomCSSProperties() {
+    // List of CSS variables to reset
+    const cssVars = [
+        '--bg-primary',
+        '--bg-secondary',
+        '--bg-tertiary',
+        '--fg-primary',
+        '--fg-secondary',
+        '--fg-tertiary',
+        '--accent',
+        '--border-color'
+    ];
+
+    // Remove the inline styles for each variable
+    cssVars.forEach(variable => {
+        document.documentElement.style.removeProperty(variable);
+    });
+}
+
 // Change the theme when scrolling or when user selects a theme
 function scrollTheme(scrollDirection = 0) {
     const themes_index = themes_keys.indexOf(menu.value);
@@ -314,6 +386,9 @@ function scrollTheme(scrollDirection = 0) {
     openCustomMenu(true);
     theme = list_of_themes[menu.value];
     displayPalette();
+
+    // Apply the selected theme to the website
+    applyWebsiteTheme(menu.value);
 }
 
 // User can scroll through themes on the drop-down menu
