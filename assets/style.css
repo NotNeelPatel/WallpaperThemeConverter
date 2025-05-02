@@ -29,7 +29,7 @@ h1 {
 a {
     text-decoration: none;
     text-decoration-line: none;
-    color: var(--white);
+    color: var(--fg-primary);
 }
 
 a:hover {

@@ -201,11 +201,13 @@ function applyCustomWebsiteTheme(colourPalette) {
     }
 }
 
+// Toggle dithering
 function dither() {
     dithering = !dithering;
     document.getElementById("dither-checkbox").checked = dithering;
 }
 
+// On click of the Convert button
 function initialize() {
     if (theme.length == 0) {
         scrollTheme();
@@ -219,6 +221,8 @@ function initialize() {
     }, 0);
 }
 
+// Get nearest colour using Euclidean distance formula (sqrt((r1-r0)^2 + (g1-g0)^2 + (b1-b0)^2))
+// where r,g,b are the colour channels
 function nearestColour(targetColour, colourScheme) {
     let minDistance = Infinity;
     let closestColor = colourScheme[0];
@@ -240,6 +244,7 @@ function nearestColour(targetColour, colourScheme) {
     return closestColor;
 }
 
+// Main function to convert the image, pixel by pixel
 function convertImage() {
     convertButton.disabled = true;
     downloadButton.style.visibility = "hidden";
