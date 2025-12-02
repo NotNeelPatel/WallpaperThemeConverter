@@ -180,3 +180,15 @@
   --fg-tertiary: #797593;
   --border-color: #797593;
 }
+
+/* Digital Rust */
+.theme-digital-rust {
+  --bg-primary: #110402;
+  --bg-secondary: #230905;
+  --bg-tertiary: #340d07;
+  --accent: #af2e1a;
+  --fg-primary: #f7eae8;
+  --fg-secondary: #efd5d1;
+  --fg-tertiary: #e7c0ba;
+  --border-color: #af2e1a;
+}
