@@ -17,6 +17,7 @@ Adjust the colours to a wallpaper to better match your setup, terminal, and/or I
 - [Kanagawa](https://github.com/rebelot/kanagawa.nvim)
 - [Catppuccin](https://github.com/catppuccin/catppuccin)
 - [Rosé Pine](https://github.com/rose-pine/rose-pine-theme)
+- [Digital Rust](https://codeberg.org/TheMeerkat/DigitalRust)
 - Custom Theme (add your own colours!)
 
 Inspired by [Gruvbox Factory](https://github.com/paulopacitti/gruvbox-factory) and [ImageGoNord](https://github.com/Schrodinger-Hat/ImageGoNord)
@@ -48,7 +49,7 @@ If you would like to contribute, see [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ## Self-Hosting/Running Locally
 
-In the event that you would like to host Wallpaper Theme Converter or run locally for development purposes, you can do so very easily as there are no JS dependencies or libraries for this website. This is a pure HTML + CSS + JS implementation. Simply clone this repository and open `index.html`. 
+In the event that you would like to host Wallpaper Theme Converter or run locally for development purposes, you can do so very easily as there are no JS dependencies or libraries for this website. This is a pure HTML + CSS + JS implementation. Simply clone this repository and open `index.html`.
 
 ## License
 

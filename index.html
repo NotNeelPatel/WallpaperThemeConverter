@@ -1,102 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>Wallpaper Theme Converter</title>
-    <meta charset="UTF-8" />
-    <link rel="stylesheet" href="./assets/style.css" />
-    <script src="./assets/convert.js"defer></script>
-    </script>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-  </head>
-  <header>
-    <h1>Wallpaper Theme Converter</h1>
-    <a href="https://github.com/NotNeelPatel/WallpaperThemeConverter?tab=readme-ov-file#instructions">How To Use This Tool</a>
-  </header>
 
-  <body>
-    <hr />
-    <br/>
-      <div>
-        <div id="drop-zone" ondragover="handleImage();">
-          <label for="image-loader">Drag/Drop, Paste (Ctrl+V), or</label>
-          <input type="file" id="image-loader" name="image-loader"  accept=".jpg, .jpeg, .png, .webp" />
-        </div>
-      </div>
+<head>
+  <title>Wallpaper Theme Converter</title>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="./assets/style.css" />
+  <script src="./assets/convert.js" defer></script>
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+</head>
+<header>
+  <h1>Wallpaper Theme Converter</h1>
+  <a href="https://github.com/NotNeelPatel/WallpaperThemeConverter?tab=readme-ov-file#instructions">How To Use This
+    Tool</a>
+</header>
 
-      <br/>
-      <canvas id="image-canvas"></canvas>
+<body>
+  <hr />
+  <br />
+  <div>
+    <div id="drop-zone" ondragover="handleImage();">
+      <label for="image-loader">Drag/Drop, Paste (Ctrl+V), or</label>
+      <input type="file" id="image-loader" name="image-loader" accept=".jpg, .jpeg, .png, .webp" />
+    </div>
+  </div>
 
-      <div class="download-buttons">
-        <button class="main-button" id="download-button" type="button" onclick="downloadImage()">↓ Download ↓</button>
-        <button class="main-button" id="reset-button" type="button" onclick="reset()">Reset Image</button>
-      </div>
+  <br />
+  <canvas id="image-canvas"></canvas>
 
-      <div class="menu-container">
-        <h3>Select a theme</h3>
-        <div id="palette">
-        </div>
+  <div class="download-buttons">
+    <button class="main-button" id="download-button" type="button" onclick="downloadImage()">↓ Download ↓</button>
+    <button class="main-button" id="reset-button" type="button" onclick="reset()">Reset Image</button>
+  </div>
 
-        <div class="options-container">
-          <button id="opt-up" onclick="scrollTheme(-1)">▲</button>
+  <div class="menu-container">
+    <h3>Select a theme</h3>
+    <div id="palette">
+    </div>
 
-          <select name="Colour Scheme" id="theme-select">
-            <option value="Gruvbox">Gruvbox</option>
-            <option value="Nord">Nord</option>
-            <option value="Everforest">Everforest</option>
-            <option value="Solarized">Solarized</option>
-            <option value="Dracula">Dracula</option>
-            <option value="Tokyo Night">Tokyo Night</option>
-            <option value="Kanagawa">Kanagawa</option>
-            <!-- For Developers: Add your theme here (example below): 
+    <div class="options-container">
+      <button id="opt-up" onclick="scrollTheme(-1)">▲</button>
+
+      <select name="Colour Scheme" id="theme-select">
+        <option value="Gruvbox">Gruvbox</option>
+        <option value="Nord">Nord</option>
+        <option value="Everforest">Everforest</option>
+        <option value="Solarized">Solarized</option>
+        <option value="Dracula">Dracula</option>
+        <option value="Tokyo Night">Tokyo Night</option>
+        <option value="Kanagawa">Kanagawa</option>
+        <option value="Digital Rust">Digital Rust</option>
+        <!-- For Developers: Add your theme here (example below): 
             <option value="Theme Name">Theme Name</option>
             -->
-            <optgroup label="Catppuccin">
-              <option value="Catppuccin Latte">Catppuccin Latte</option>
-              <option value="Catppuccin Frappe">Catppuccin Frappe</option>
-              <option value="Catppuccin Macchiato">Catppuccin Macchiato</option>
-              <option value="Catppuccin Mocha">Catppuccin Mocha</option>
-            </optgroup>
-            <optgroup label="Rose Pine">
-              <option value="Rose Pine">Rose Pine</option>
-              <option value="Rose Pine Moon">Rose Pine Moon</option>
-              <option value="Rose Pine Dawn">Rose Pine Dawn</option>
-            </optgroup>
-            <!-- For Developers: Add grouped themes here under an optgroup (example below):
-             <optgroup label="Group Name">
-              <option value="Theme Name">Theme Name</option>
-              <option value="Theme Name">Theme Name</option>
-              <option value="Theme Name">Theme Name</option>
-            -->
-          </select>
+        <optgroup label="Catppuccin">
+          <option value="Catppuccin Latte">Catppuccin Latte</option>
+          <option value="Catppuccin Frappe">Catppuccin Frappe</option>
+          <option value="Catppuccin Macchiato">Catppuccin Macchiato</option>
+          <option value="Catppuccin Mocha">Catppuccin Mocha</option>
+        </optgroup>
+        <optgroup label="Rose Pine">
+          <option value="Rose Pine">Rose Pine</option>
+          <option value="Rose Pine Moon">Rose Pine Moon</option>
+          <option value="Rose Pine Dawn">Rose Pine Dawn</option>
+        </optgroup>
+        <!-- For Developers: Add grouped themes here under an optgroup (example below):
+        <optgroup label="Group Name">
+         <option value="Theme Name">Theme Name</option>
+         <option value="Theme Name">Theme Name</option>
+         <option value="Theme Name">Theme Name</option>
+        </optgroup> -->
+      </select>
 
-          <button id="opt-down" onclick="scrollTheme(1)">▼</button>
-          <button id="custom-theme-button" onclick="openCustomMenu()"> + Custom Theme </button>
-        </div>
-        <div class="dither-options" onclick="dither()">
-          <input type="checkbox" id="dither-checkbox" />
-          <label id="dither-checkbox-label" for="checkbox">More Accurate Colours</label>
-          <span class="tooltip-text">Adds dithering to reduce colour-banding</span>
-        </div>
-      <div id="custom-menu">
-        <button onclick="addColour()">+</button>
-        <button onclick="removeColour()">-</button>
-        <div id="colours">
-        </div>
+      <button id="opt-down" onclick="scrollTheme(1)">▼</button>
+      <button id="custom-theme-button" onclick="openCustomMenu()"> + Custom Theme </button>
+    </div>
+    <div class="dither-options" onclick="dither()">
+      <input type="checkbox" id="dither-checkbox" />
+      <label id="dither-checkbox-label" for="checkbox">More Accurate Colours</label>
+      <span class="tooltip-text">Adds dithering to reduce colour-banding</span>
+    </div>
+    <div id="custom-menu">
+      <button onclick="addColour()">+</button>
+      <button onclick="removeColour()">-</button>
+      <div id="colours">
       </div>
-        <button class="main-button" id="convert" type="button" onclick="initialize()">Convert</button>
-      </div>
+    </div>
+    <button class="main-button" id="convert" type="button" onclick="initialize()">Convert</button>
+  </div>
 
-  </body>
-  <footer>
-    <p>© 2022-2025 Neel Patel</p>
-    <ul>
-      <a href="https://notneelpatel.github.io">My Website</a>
-      <a>|</a>
-      <a href="https://github.com/NotNeelPatel/WallpaperThemeConverter">GitHub Repo</a>
-      <a>|</a>
-      <a href="https://github.com/NotNeelPatel/WallpaperThemeConverter/graphs/contributors">List of Contributors</a>
-      <a>|</a>
-      <a href="https://notneelpatel.github.io/blog/2022-05-10-wallpaper-theme-converter.html">About Wallpaper Theme Converter</a>
-    </ul>
-  </footer>
+</body>
+<footer>
+  <p>© 2022-2025 Neel Patel</p>
+  <ul>
+    <a href="https://notneelpatel.github.io">My Website</a>
+    <a>|</a>
+    <a href="https://github.com/NotNeelPatel/WallpaperThemeConverter">GitHub Repo</a>
+    <a>|</a>
+    <a href="https://github.com/NotNeelPatel/WallpaperThemeConverter/graphs/contributors">List of Contributors</a>
+    <a>|</a>
+    <a href="https://notneelpatel.github.io/blog/2022-05-10-wallpaper-theme-converter.html">About Wallpaper Theme
+      Converter</a>
+  </ul>
+</footer>
+
 </html>
