@@ -47,25 +47,23 @@ Follow the `<!-- For Developers:` comments.
 ```js
 {
     "Theme": [
-        r,g,b,
-        r,g,b,
-        r,g,b,
+        "#rrggbb",
+        "#rrggbb",
+        "#rrggbb",
         ...
-        r,g,b
+        "#rrggbb"
         ],
     ...
     "Theme": [
-        r,g,b,
-        r,g,b,
+        "#rrggbb",
+        "#rrggbb",
         ...
-        r,g,b
+        "#rrggbb"
         ]
 }
 ```
 
-Each r,g, and b value is stored one after another in an array of integers, where r,g,b represents one colour of the theme.
-
-Please ensure that the order remains the same as listed in index.html. Add your palette in r,g,b values.
+Please ensure that the order remains the same as listed in index.html. Add your palette in hex RGB values.
 
 ### Changes in README.md
 

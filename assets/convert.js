@@ -101,14 +101,13 @@ function displayPalette() {
         colour_palette_count = 0;
     }
     // Create new colour palette
-    for (var i = 0; i < theme.length; i += 3) {
+    theme.forEach((colour) => {
         const palette_node = document.createElement("div");
         palette_node.className = "palette-node";
-        palette_node.style.backgroundColor =
-            "rgb(" + theme[i] + "," + theme[i + 1] + "," + theme[i + 2] + ")";
+        palette_node.style.backgroundColor = colour;
         palette_div.appendChild(palette_node);
         colour_palette_count++;
-    }
+    });
 }
 
 // Opens the custom menu
@@ -156,14 +155,9 @@ function createCustomPalette() {
     var hex_parsed = 0;
     var colour_palette = [];
 
-    for (var i = 0; i < nodes; i++) {
+    for (var i = 0; i<nodes; i++) {
         hex_colour = document.getElementById("node" + i).value;
-        hex_parsed = hex_colour.match(
-            /^#?([\da-f]{2})([\da-f]{2})([\da-f]{2})$/i
-        );
-        colour_palette[i * 3] = parseInt(hex_parsed[1], 16);
-        colour_palette[i * 3 + 1] = parseInt(hex_parsed[2], 16);
-        colour_palette[i * 3 + 2] = parseInt(hex_parsed[3], 16);
+        colour_palette[i] = hex_colour
     }
 
     theme = colour_palette;
@@ -183,11 +177,12 @@ function applyCustomWebsiteTheme(colourPalette) {
     });
 
     // If we have enough colors in the palette, create a custom theme
-    if (colourPalette.length >= 9) { // At least 3 colors (9 values)
+    if (colourPalette.length >= 3) { // At least 3 colors
+        console.log(colourPalette)
         // Get primary background and foreground colors
-        const bgColor = `rgb(${colourPalette[0]}, ${colourPalette[1]}, ${colourPalette[2]})`;
-        const bgSecondary = `rgb(${colourPalette[3]}, ${colourPalette[4]}, ${colourPalette[5]})`;
-        const fgColor = `rgb(${colourPalette[6]}, ${colourPalette[7]}, ${colourPalette[8]})`;
+        const bgColor = colourPalette[0];
+        const bgSecondary = colourPalette[1];
+        const fgColor = colourPalette[2];
 
         // Apply custom colors directly to CSS variables
         document.documentElement.style.setProperty('--bg-primary', bgColor);
@@ -253,7 +248,14 @@ function convertImage() {
     var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
     var pixels = imageData.data;
     // Avoid changing of theme mid-conversion
-    let colourScheme = theme;
+    var colourScheme = [];
+    for (let i = 0; i < theme.length; i++) {
+        let hex = theme[i].replace(/^#/, '');
+        colourScheme[3*i] = parseInt(hex.slice(0,2), 16);
+        colourScheme[3*i+1] =parseInt(hex.slice(2,4), 16);
+        colourScheme[3*i+2]= parseInt(hex.slice(4,6), 16);
+    }
+
     let ditheringValue = dithering;
     let y = 0; // Start processing from the first row
     var batchSize = 0;
