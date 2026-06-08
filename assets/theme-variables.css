@@ -192,3 +192,14 @@
   --fg-tertiary: #e7c0ba;
   --border-color: #af2e1a;
 }
+
+/* Zen Bones Light */
+.theme-zenbones-light {
+  --bg-primary: #CFC1BA;
+  --bg-secondary: #F0EDEC;
+  --bg-tertiary: #F0EDEC;
+  --accent: #944927;
+  --fg-primary: #2C363C;
+  --fg-secondary: #4F5E68;
+  --fg-tertiary: #803D1C;
+}
