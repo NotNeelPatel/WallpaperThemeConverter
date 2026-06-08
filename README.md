@@ -2,7 +2,7 @@
 
 [https://notneelpatel.github.io/WallpaperThemeConverter](https://notneelpatel.github.io/WallpaperThemeConverter)
 
-### A webpage that converts any image to any colour palette.
+### A webpage that converts any image to any colour palette
 
 ![example](https://user-images.githubusercontent.com/91706742/167537142-11c1f406-e614-479f-9701-92460a90fcef.png)
 
@@ -18,6 +18,7 @@ Adjust the colours to a wallpaper to better match your setup, terminal, and/or I
 - [Catppuccin](https://github.com/catppuccin/catppuccin)
 - [Rosé Pine](https://github.com/rose-pine/rose-pine-theme)
 - [Digital Rust](https://codeberg.org/TheMeerkat/DigitalRust)
+- [Zenbones Light](https://github.com/zenbones-theme/zenbones.nvim/tree/main)
 - Custom Theme (add your own colours!)
 
 Inspired by [Gruvbox Factory](https://github.com/paulopacitti/gruvbox-factory) and [ImageGoNord](https://github.com/Schrodinger-Hat/ImageGoNord)
