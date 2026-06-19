@@ -91,6 +91,10 @@ function reset() {
 
 // Displays the colour palette
 function displayPalette() {
+  const plusButton = document.createElement("button");
+  //plusButton.className = "palette-node";
+  plusButton.id = "plus-button";
+  plusButton.textContent = "+";
   // Deletes previous colour palette
   if (colour_palette_count != 0) {
     for (var i = 0; i < colour_palette_count; i++) {
@@ -100,6 +104,9 @@ function displayPalette() {
     }
     colour_palette_count = 0;
   }
+  // remove the plus button
+  palette_div.removeChild(palette_div.lastChild);
+
   // Create new colour palette
   theme.forEach((colour) => {
     const palette_node = document.createElement("div");
@@ -108,6 +115,9 @@ function displayPalette() {
     palette_div.appendChild(palette_node);
     colour_palette_count++;
   });
+  for (let i = 0; i < 10; i++) {
+    palette_div.appendChild(plusButton);
+  }
 }
 
 // Opens the custom menu
@@ -118,11 +128,14 @@ function openCustomMenu(keepClosed = false) {
     document.getElementById("custom-menu").style.display = "none";
     document.getElementById("custom-theme-button").textContent =
       "+ Custom Theme";
+    document.getElementById('custom-option').hidden = true;
     menuVisible = false;
   } else {
     document.getElementById("custom-menu").style.display = "block";
     document.getElementById("custom-theme-button").textContent =
       "- Custom Theme";
+    document.getElementById("theme-select").value = "Custom";
+    document.getElementById('custom-option').hidden = false;
     menuVisible = true;
     createCustomPalette();
   }

@@ -203,6 +203,18 @@ input[type="checkbox"]:checked {
     transition: border-color 0.3s ease;
 }
 
+#plus-button {
+  display: flex;
+  align-items: center;
+  text-align:center;
+  font-size: 1em;
+  height:1em;
+  margin: 0;
+  margin-left:0.5em;
+  padding: auto;
+
+}
+
 .options-container {
     display: flex;
     justify-content: center;
@@ -325,6 +337,12 @@ footer a {
     .palette-node {
         height: 0.8em;
         width: 0.8em;
+    }
+
+    #plus-button {
+        height: 0.8em;
+        width: 0.8em;
+        font-size: 0.8em;
     }
 
     #custom-menu {
