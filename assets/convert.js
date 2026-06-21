@@ -32,20 +32,20 @@ var ctx = canvas.getContext("2d");
 const downloadButton = document.getElementById("download-button");
 const resetButton = document.getElementById("reset-button");
 const convertButton = document.getElementById("convert");
-const customMenu = document.getElementById("custom-menu");
 const colours_div = document.getElementById("colours");
 const palette_div = document.getElementById("palette");
 const menu = document.getElementById("theme-select");
 
+const plusButton = document.createElement("button");
+plusButton.id = "plus-button";
+plusButton.textContent = "+";
+plusButton.onclick = function () { addCustomColour() };
+
 // Changing visibility of download/reset buttons, image canvas, and the menu for custom theme
 canvas.style.visibility = "hidden";
-customMenu.style.display = "none";
 
 // Global variables
 var ogimage;
-var theme = [];
-var nodes = 0;
-var colour_palette_count = 0;
 var menuVisible = false;
 var list_of_themes;
 var themes_keys;
@@ -90,94 +90,49 @@ function reset() {
 }
 
 // Displays the colour palette
-function displayPalette() {
-  const plusButton = document.createElement("button");
-  //plusButton.className = "palette-node";
-  plusButton.id = "plus-button";
-  plusButton.textContent = "+";
+function displayPalette(theme) {
+
   // Deletes previous colour palette
-  if (colour_palette_count != 0) {
-    for (var i = 0; i < colour_palette_count; i++) {
-      document
-        .getElementById("palette")
-        .removeChild(palette_div.lastElementChild);
-    }
-    colour_palette_count = 0;
-  }
-  // remove the plus button
-  palette_div.removeChild(palette_div.lastChild);
+  Array.from(palette_div.children).forEach((element) => palette_div.removeChild(element));
 
   // Create new colour palette
   theme.forEach((colour) => {
-    const palette_node = document.createElement("div");
+    const palette_node = document.createElement("input");
+    palette_node.setAttribute("type", "color");
     palette_node.className = "palette-node";
-    palette_node.style.backgroundColor = colour;
+    palette_node.setAttribute("value", colour);
     palette_div.appendChild(palette_node);
-    colour_palette_count++;
   });
-  for (let i = 0; i < 10; i++) {
-    palette_div.appendChild(plusButton);
-  }
+  palette_div.appendChild(plusButton);
 }
 
-// Opens the custom menu
-function openCustomMenu(keepClosed = false) {
-  if (keepClosed) menuVisible = true;
+// Adds custom colour to the theme
+function addCustomColour() {
+  // remove the plus button
+  palette_div.removeChild(palette_div.lastElementChild);
 
-  if (menuVisible == true) {
-    document.getElementById("custom-menu").style.display = "none";
-    document.getElementById("custom-theme-button").textContent =
-      "+ Custom Theme";
-    document.getElementById('custom-option').hidden = true;
-    menuVisible = false;
-  } else {
-    document.getElementById("custom-menu").style.display = "block";
-    document.getElementById("custom-theme-button").textContent =
-      "- Custom Theme";
-    document.getElementById("theme-select").value = "Custom";
-    document.getElementById('custom-option').hidden = false;
-    menuVisible = true;
-    createCustomPalette();
-  }
-}
-
-// Adds a colour swatch when pressed
-function addColour() {
   const colour_node = document.createElement("input");
+  colour_node.className = "palette-node";
   colour_node.setAttribute("type", "color");
-  colour_node.id = "node" + nodes;
-  colours_div.appendChild(colour_node);
-  nodes++;
-  createCustomPalette();
+  palette_div.appendChild(colour_node);
+  palette_div.appendChild(plusButton);
 }
 
-// Removes a colour swatch when pressed
-function removeColour() {
-  if (nodes > 0) {
-    document
-      .getElementById("colours")
-      .removeChild(colours_div.lastElementChild);
-    nodes--;
-  }
-  createCustomPalette();
+
+function getPalette() {
+
+  var theme = [];
+
+  const colourDivs = palette_div.querySelectorAll(".palette-node");
+  (colourDivs).forEach(node => {
+    if (node.value) {
+      theme.push(node.value);
+    }
+  });
+
+  return theme;
 }
 
-// When the user is done with their custom theme, the colour data is loaded into the theme array
-function createCustomPalette() {
-  var hex_colour = "#FFFFFF";
-  var colour_palette = [];
-
-  for (var i = 0; i < nodes; i++) {
-    hex_colour = document.getElementById("node" + i).value;
-    colour_palette[i] = hex_colour
-  }
-
-  theme = colour_palette;
-  displayPalette();
-
-  // Apply custom theme to website
-  applyCustomWebsiteTheme(colour_palette);
-}
 
 // Apply a custom theme to the website
 function applyCustomWebsiteTheme(colourPalette) {
@@ -190,7 +145,6 @@ function applyCustomWebsiteTheme(colourPalette) {
 
   // If we have enough colors in the palette, create a custom theme
   if (colourPalette.length >= 3) { // At least 3 colors
-    console.log(colourPalette)
     // Get primary background and foreground colors
     const bgColor = colourPalette[0];
     const bgSecondary = colourPalette[1];
@@ -216,11 +170,8 @@ function dither() {
 
 // On click of the Convert button
 function initialize() {
-  if (theme.length == 0) {
+  if (getPalette().length == 0) {
     scrollTheme();
-  }
-  if (customMenu.style.display === "block") {
-    createCustomPalette();
   }
 
   setTimeout(function () {
@@ -260,6 +211,9 @@ function convertImage() {
   var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
   var pixels = imageData.data;
   // Avoid changing of theme mid-conversion
+  theme = getPalette();
+  if (theme.length == 0) { convertButton.disabled = false; return; };
+
   var colourScheme = [];
   for (let i = 0; i < theme.length; i++) {
     let hex = theme[i].replace(/^#/, '');
@@ -277,6 +231,7 @@ function convertImage() {
   } else {
     batchSize = Math.floor(canvas.height / 10)
   }
+
 
   // Load by chunk
   function processBatch() {
@@ -402,9 +357,7 @@ function scrollTheme(scrollDirection = 0) {
     menu.value = themes_keys[0];
   }
 
-  openCustomMenu(true);
-  theme = list_of_themes[menu.value];
-  displayPalette();
+  displayPalette(list_of_themes[menu.value]);
 
   // Apply the selected theme to the website
   applyWebsiteTheme(menu.value);
@@ -422,12 +375,3 @@ menu.addEventListener("wheel", (event) => {
 document.getElementById("theme-select").onchange = function () {
   scrollTheme();
 };
-
-// Updates palette when user sets a colour in the custom menu
-document.addEventListener("click", function (event) {
-  if (event.target.type === "color") {
-    event.target.addEventListener("input", function () {
-      createCustomPalette();
-    });
-  }
-});

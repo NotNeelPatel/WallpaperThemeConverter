@@ -66,6 +66,7 @@
           <option value="Rose Pine Moon">Rose Pine Moon</option>
           <option value="Rose Pine Dawn">Rose Pine Dawn</option>
         </optgroup>
+        <option value="Custom">Custom Theme</option>
         <!-- For Developers: Add grouped themes here under an optgroup (example below):
         <optgroup label="Group Name">
          <option value="Theme Name">Theme Name</option>
@@ -75,19 +76,13 @@
       </select>
 
       <button id="opt-down" onclick="scrollTheme(1)">▼</button>
-      <button id="custom-theme-button" onclick="openCustomMenu()"> + Custom Theme </button>
     </div>
     <div class="dither-options" onclick="dither()">
       <input type="checkbox" id="dither-checkbox" />
       <label id="dither-checkbox-label" for="checkbox">More Accurate Colours</label>
       <span class="tooltip-text">Adds dithering to reduce colour-banding</span>
     </div>
-    <div id="custom-menu">
-      <button onclick="addColour()">+</button>
-      <button onclick="removeColour()">-</button>
-      <div id="colours">
-      </div>
-    </div>
+    
     <button class="main-button" id="convert" type="button" onclick="initialize()">Convert</button>
   </div>
 

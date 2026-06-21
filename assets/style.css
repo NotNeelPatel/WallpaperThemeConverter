@@ -191,8 +191,7 @@ input[type="checkbox"]:checked {
 #palette {
     display: flex;
     justify-content: center;
-    margin: auto;
-    margin-bottom: 1em;
+    margin: auto auto 1em auto;
 }
 
 .palette-node {
@@ -264,13 +263,29 @@ input[type="checkbox"]:checked {
 }
 
 input[type="color"] {
-    width: 3em;
-    height: 3em;
+    appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    width: 1em;
+    height: 1em;
     background-color: var(--bg-primary);
-    border: none;
+    border: 1px solid var(--fg-secondary);
+    padding:0;
+    margin: 0;
     transition: background-color 0.3s ease;
 }
 
+input[type="color"]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+input[type="color"]::-webkit-color-swatch {
+  border: none;
+}
+
+input[type="color"]::-moz-color-swatch {
+  border: none;
+}
 
 #loading-screen p {
     margin-top: 40vh;
@@ -337,6 +352,7 @@ footer a {
     .palette-node {
         height: 0.8em;
         width: 0.8em;
+        font-size:1.2em;
     }
 
     #plus-button {
