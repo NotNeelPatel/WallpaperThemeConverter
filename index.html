@@ -74,16 +74,16 @@
       </select>
 
       <button id="opt-down" onclick="scrollTheme(1)">▼</button>
-    </div>
-    <div class="dither-options" onclick="dither()">
-      <input type="checkbox" id="dither-checkbox" />
-      <label id="dither-checkbox-label" for="checkbox">More Accurate Colours</label>
-      <span class="tooltip-text">Adds dithering to reduce colour-banding</span>
-    </div>
+        <button class="main-button" id="convert" type="button" onclick="initialize()">Convert</button>
+      </div>
+<div class="dither-options" onclick="dither()">
+          <input type="checkbox" id="dither-checkbox" />
+          <label id="dither-checkbox-label" for="checkbox">More Accurate Colours</label>
+          <span class="tooltip-text">Adds dithering to reduce colour-banding</span>
+        </div>
     <div id="palette">
     </div>
 
-    <button class="main-button" id="convert" type="button" onclick="initialize()">Convert</button>
   </div>
 
 </body>

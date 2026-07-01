@@ -34,19 +34,27 @@ const resetButton = document.getElementById("reset-button");
 const convertButton = document.getElementById("convert");
 const colours_div = document.getElementById("colours");
 const palette_div = document.getElementById("palette");
+palette_div.onmouseleave = () => {
+  palette_div.removeChild(removeButton);
+};
 const menu = document.getElementById("theme-select");
 
 const plusButton = document.createElement("button");
 plusButton.id = "plus-button";
 plusButton.textContent = "+";
-plusButton.onclick = function () { addCustomColour() };
+plusButton.onclick = function () {
+  addCustomColour();
+};
 
-// Changing visibility of download/reset buttons, image canvas, and the menu for custom theme
+const removeButton = document.createElement("button");
+removeButton.textContent = "x";
+removeButton.className = "remove-button";
+
+// Changing visibility of download/reset buttons, image canvas
 canvas.style.visibility = "hidden";
 
 // Global variables
 var ogimage;
-var menuVisible = false;
 var list_of_themes;
 var themes_keys;
 var dithering = false;
@@ -91,9 +99,10 @@ function reset() {
 
 // Displays the colour palette
 function displayPalette(theme) {
-
   // Deletes previous colour palette
-  Array.from(palette_div.children).forEach((element) => palette_div.removeChild(element));
+  Array.from(palette_div.children).forEach((element) =>
+    palette_div.removeChild(element),
+  );
 
   // Create new colour palette
   theme.forEach((colour) => {
@@ -101,30 +110,61 @@ function displayPalette(theme) {
     palette_node.setAttribute("type", "color");
     palette_node.className = "palette-node";
     palette_node.setAttribute("value", colour);
+    palette_node.onmouseover = () => {
+      showRemoveButton(palette_node);
+    };
     palette_div.appendChild(palette_node);
   });
   palette_div.appendChild(plusButton);
+}
+
+function randomColour() {
+  var letters = "0123456789ABCDEF";
+  var color = "#";
+  for (var i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
 }
 
 // Adds custom colour to the theme
 function addCustomColour() {
   // remove the plus button
   palette_div.removeChild(palette_div.lastElementChild);
-
   const colour_node = document.createElement("input");
   colour_node.className = "palette-node";
   colour_node.setAttribute("type", "color");
+  colour_node.value = randomColour();
+  colour_node.onmouseover = () => {
+    showRemoveButton(colour_node);
+  };
   palette_div.appendChild(colour_node);
   palette_div.appendChild(plusButton);
+  if (menu.value === "Custom") {
+    applyCustomWebsiteTheme(getPalette());
+  }
 }
 
+function showRemoveButton(palette_node) {
+  palette_div.appendChild(removeButton);
+  var rect = palette_node.getBoundingClientRect();
+  const scrollX = window.scrollX;
+  const scrollY = window.scrollY;
+  var x = rect.right + scrollX - 0.5 * palette_node.offsetWidth;
+  var y = rect.top + scrollY - 0.5 * palette_node.offsetHeight;
+  removeButton.style.top = y + "px";
+  removeButton.style.left = x + "px";
+  removeButton.onclick = () => {
+    palette_div.removeChild(removeButton);
+    palette_div.removeChild(palette_node);
+  };
+}
 
 function getPalette() {
-
   var theme = [];
 
   const colourDivs = palette_div.querySelectorAll(".palette-node");
-  (colourDivs).forEach(node => {
+  colourDivs.forEach((node) => {
     if (node.value) {
       theme.push(node.value);
     }
@@ -133,32 +173,32 @@ function getPalette() {
   return theme;
 }
 
-
 // Apply a custom theme to the website
 function applyCustomWebsiteTheme(colourPalette) {
   // Remove all theme classes from body
-  document.body.classList.forEach(className => {
-    if (className.startsWith('theme-')) {
+  document.body.classList.forEach((className) => {
+    if (className.startsWith("theme-")) {
       document.body.classList.remove(className);
     }
   });
 
   // If we have enough colors in the palette, create a custom theme
-  if (colourPalette.length >= 3) { // At least 3 colors
+  if (colourPalette.length >= 3) {
+    // At least 3 colors
     // Get primary background and foreground colors
     const bgColor = colourPalette[0];
     const bgSecondary = colourPalette[1];
     const fgColor = colourPalette[2];
 
     // Apply custom colors directly to CSS variables
-    document.documentElement.style.setProperty('--bg-primary', bgColor);
-    document.documentElement.style.setProperty('--bg-secondary', bgSecondary);
-    document.documentElement.style.setProperty('--bg-tertiary', bgSecondary);
-    document.documentElement.style.setProperty('--fg-primary', fgColor);
-    document.documentElement.style.setProperty('--fg-secondary', fgColor);
-    document.documentElement.style.setProperty('--fg-tertiary', fgColor);
-    document.documentElement.style.setProperty('--accent', bgSecondary);
-    document.documentElement.style.setProperty('--border-color', fgColor);
+    document.documentElement.style.setProperty("--bg-primary", bgColor);
+    document.documentElement.style.setProperty("--bg-secondary", bgSecondary);
+    document.documentElement.style.setProperty("--bg-tertiary", bgSecondary);
+    document.documentElement.style.setProperty("--fg-primary", fgColor);
+    document.documentElement.style.setProperty("--fg-secondary", fgColor);
+    document.documentElement.style.setProperty("--fg-tertiary", fgColor);
+    document.documentElement.style.setProperty("--accent", bgSecondary);
+    document.documentElement.style.setProperty("--border-color", fgColor);
   }
 }
 
@@ -190,8 +230,8 @@ function nearestColour(targetColour, colourScheme) {
     // Euclidean distance in RGB space
     let distance = Math.sqrt(
       Math.pow(targetColour[0] - color[0], 2) +
-      Math.pow(targetColour[1] - color[1], 2) +
-      Math.pow(targetColour[2] - color[2], 2)
+        Math.pow(targetColour[1] - color[1], 2) +
+        Math.pow(targetColour[2] - color[2], 2),
     );
 
     if (distance < minDistance) {
@@ -212,11 +252,14 @@ function convertImage() {
   var pixels = imageData.data;
   // Avoid changing of theme mid-conversion
   theme = getPalette();
-  if (theme.length == 0) { convertButton.disabled = false; return; };
+  if (theme.length == 0) {
+    convertButton.disabled = false;
+    return;
+  }
 
   var colourScheme = [];
   for (let i = 0; i < theme.length; i++) {
-    let hex = theme[i].replace(/^#/, '');
+    let hex = theme[i].replace(/^#/, "");
     colourScheme[3 * i] = parseInt(hex.slice(0, 2), 16);
     colourScheme[3 * i + 1] = parseInt(hex.slice(2, 4), 16);
     colourScheme[3 * i + 2] = parseInt(hex.slice(4, 6), 16);
@@ -227,11 +270,10 @@ function convertImage() {
   var batchSize = 0;
   // Make loading slightly faster on mobile
   if (window.innerWidth > 800) {
-    batchSize = Math.floor(canvas.height / 16)
+    batchSize = Math.floor(canvas.height / 16);
   } else {
-    batchSize = Math.floor(canvas.height / 10)
+    batchSize = Math.floor(canvas.height / 10);
   }
-
 
   // Load by chunk
   function processBatch() {
@@ -307,8 +349,8 @@ function downloadImage() {
 // Apply the selected theme to the website
 function applyWebsiteTheme(themeName) {
   // Remove all theme classes from body
-  document.body.classList.forEach(className => {
-    if (className.startsWith('theme-')) {
+  document.body.classList.forEach((className) => {
+    if (className.startsWith("theme-")) {
       document.body.classList.remove(className);
     }
   });
@@ -317,7 +359,7 @@ function applyWebsiteTheme(themeName) {
   resetCustomCSSProperties();
 
   // Convert theme name to CSS class name (lowercase, replace spaces with hyphens)
-  const themeClass = 'theme-' + themeName.toLowerCase().replace(/ /g, '-');
+  const themeClass = "theme-" + themeName.toLowerCase().replace(/ /g, "-");
 
   // Add the new theme class to body
   document.body.classList.add(themeClass);
@@ -327,18 +369,18 @@ function applyWebsiteTheme(themeName) {
 function resetCustomCSSProperties() {
   // List of CSS variables to reset
   const cssVars = [
-    '--bg-primary',
-    '--bg-secondary',
-    '--bg-tertiary',
-    '--fg-primary',
-    '--fg-secondary',
-    '--fg-tertiary',
-    '--accent',
-    '--border-color'
+    "--bg-primary",
+    "--bg-secondary",
+    "--bg-tertiary",
+    "--fg-primary",
+    "--fg-secondary",
+    "--fg-tertiary",
+    "--accent",
+    "--border-color",
   ];
 
   // Remove the inline styles for each variable
-  cssVars.forEach(variable => {
+  cssVars.forEach((variable) => {
     document.documentElement.style.removeProperty(variable);
   });
 }
