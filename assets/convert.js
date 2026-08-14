@@ -32,21 +32,29 @@ var ctx = canvas.getContext("2d");
 const downloadButton = document.getElementById("download-button");
 const resetButton = document.getElementById("reset-button");
 const convertButton = document.getElementById("convert");
-const customMenu = document.getElementById("custom-menu");
 const colours_div = document.getElementById("colours");
 const palette_div = document.getElementById("palette");
+palette_div.onmouseleave = () => {
+  palette_div.removeChild(removeButton);
+};
 const menu = document.getElementById("theme-select");
 
-// Changing visibility of download/reset buttons, image canvas, and the menu for custom theme
+const plusButton = document.createElement("button");
+plusButton.id = "plus-button";
+plusButton.textContent = "+";
+plusButton.onclick = function () {
+  addCustomColour();
+};
+
+const removeButton = document.createElement("button");
+removeButton.textContent = "-";
+removeButton.className = "remove-button";
+
+// Changing visibility of download/reset buttons, image canvas
 canvas.style.visibility = "hidden";
-customMenu.style.display = "none";
 
 // Global variables
 var ogimage;
-var theme = [];
-var nodes = 0;
-var colour_palette_count = 0;
-var menuVisible = false;
 var list_of_themes;
 var themes_keys;
 var dithering = false;
@@ -90,108 +98,104 @@ function reset() {
 }
 
 // Displays the colour palette
-function displayPalette() {
+function displayPalette(theme) {
   // Deletes previous colour palette
-  if (colour_palette_count != 0) {
-    for (var i = 0; i < colour_palette_count; i++) {
-      document
-        .getElementById("palette")
-        .removeChild(palette_div.lastElementChild);
-    }
-    colour_palette_count = 0;
-  }
+  Array.from(palette_div.children).forEach((element) =>
+    palette_div.removeChild(element),
+  );
+
   // Create new colour palette
   theme.forEach((colour) => {
-    const palette_node = document.createElement("div");
+    const palette_node = document.createElement("input");
+    palette_node.setAttribute("type", "color");
     palette_node.className = "palette-node";
-    palette_node.style.backgroundColor = colour;
+    palette_node.setAttribute("value", colour);
+    palette_node.onmouseover = () => {
+      showRemoveButton(palette_node);
+    };
     palette_div.appendChild(palette_node);
-    colour_palette_count++;
   });
+  palette_div.appendChild(plusButton);
 }
 
-// Opens the custom menu
-function openCustomMenu(keepClosed = false) {
-  if (keepClosed) menuVisible = true;
-
-  if (menuVisible == true) {
-    document.getElementById("custom-menu").style.display = "none";
-    document.getElementById("custom-theme-button").textContent =
-      "+ Custom Theme";
-    menuVisible = false;
-  } else {
-    document.getElementById("custom-menu").style.display = "block";
-    document.getElementById("custom-theme-button").textContent =
-      "- Custom Theme";
-    menuVisible = true;
-    createCustomPalette();
+function randomColour() {
+  var letters = "0123456789ABCDEF";
+  var color = "#";
+  for (var i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
   }
+  return color;
 }
 
-// Adds a colour swatch when pressed
-function addColour() {
+// Adds custom colour to the theme
+function addCustomColour() {
+  // remove the plus button
+  palette_div.removeChild(palette_div.lastElementChild);
   const colour_node = document.createElement("input");
+  colour_node.className = "palette-node";
   colour_node.setAttribute("type", "color");
-  colour_node.id = "node" + nodes;
-  colours_div.appendChild(colour_node);
-  nodes++;
-  createCustomPalette();
+  colour_node.value = randomColour();
+  colour_node.onmouseover = () => {
+    showRemoveButton(colour_node);
+  };
+  palette_div.appendChild(colour_node);
+  palette_div.appendChild(plusButton);
 }
 
-// Removes a colour swatch when pressed
-function removeColour() {
-  if (nodes > 0) {
-    document
-      .getElementById("colours")
-      .removeChild(colours_div.lastElementChild);
-    nodes--;
-  }
-  createCustomPalette();
+function showRemoveButton(palette_node) {
+  palette_div.appendChild(removeButton);
+  var rect = palette_node.getBoundingClientRect();
+  const scrollX = window.scrollX;
+  const scrollY = window.scrollY;
+  var x = rect.right + scrollX - 0.5 * palette_node.offsetWidth;
+  var y = rect.top + scrollY - 0.5 * palette_node.offsetHeight;
+  removeButton.style.top = y + "px";
+  removeButton.style.left = x + "px";
+  removeButton.onclick = () => {
+    palette_div.removeChild(removeButton);
+    palette_div.removeChild(palette_node);
+  };
 }
 
-// When the user is done with their custom theme, the colour data is loaded into the theme array
-function createCustomPalette() {
-  var hex_colour = "#FFFFFF";
-  var colour_palette = [];
+function getPalette() {
+  var theme = [];
 
-  for (var i = 0; i < nodes; i++) {
-    hex_colour = document.getElementById("node" + i).value;
-    colour_palette[i] = hex_colour
-  }
+  const colourDivs = palette_div.querySelectorAll(".palette-node");
+  colourDivs.forEach((node) => {
+    if (node.value) {
+      theme.push(node.value);
+    }
+  });
 
-  theme = colour_palette;
-  displayPalette();
-
-  // Apply custom theme to website
-  applyCustomWebsiteTheme(colour_palette);
+  return theme;
 }
 
 // Apply a custom theme to the website
 function applyCustomWebsiteTheme(colourPalette) {
   // Remove all theme classes from body
-  document.body.classList.forEach(className => {
-    if (className.startsWith('theme-')) {
+  document.body.classList.forEach((className) => {
+    if (className.startsWith("theme-")) {
       document.body.classList.remove(className);
     }
   });
 
   // If we have enough colors in the palette, create a custom theme
-  if (colourPalette.length >= 3) { // At least 3 colors
-    console.log(colourPalette)
+  if (colourPalette.length >= 3) {
+    // At least 3 colors
     // Get primary background and foreground colors
     const bgColor = colourPalette[0];
     const bgSecondary = colourPalette[1];
     const fgColor = colourPalette[2];
 
     // Apply custom colors directly to CSS variables
-    document.documentElement.style.setProperty('--bg-primary', bgColor);
-    document.documentElement.style.setProperty('--bg-secondary', bgSecondary);
-    document.documentElement.style.setProperty('--bg-tertiary', bgSecondary);
-    document.documentElement.style.setProperty('--fg-primary', fgColor);
-    document.documentElement.style.setProperty('--fg-secondary', fgColor);
-    document.documentElement.style.setProperty('--fg-tertiary', fgColor);
-    document.documentElement.style.setProperty('--accent', bgSecondary);
-    document.documentElement.style.setProperty('--border-color', fgColor);
+    document.documentElement.style.setProperty("--bg-primary", bgColor);
+    document.documentElement.style.setProperty("--bg-secondary", bgSecondary);
+    document.documentElement.style.setProperty("--bg-tertiary", bgSecondary);
+    document.documentElement.style.setProperty("--fg-primary", fgColor);
+    document.documentElement.style.setProperty("--fg-secondary", fgColor);
+    document.documentElement.style.setProperty("--fg-tertiary", fgColor);
+    document.documentElement.style.setProperty("--accent", bgSecondary);
+    document.documentElement.style.setProperty("--border-color", fgColor);
   }
 }
 
@@ -203,11 +207,8 @@ function dither() {
 
 // On click of the Convert button
 function initialize() {
-  if (theme.length == 0) {
+  if (getPalette().length == 0) {
     scrollTheme();
-  }
-  if (customMenu.style.display === "block") {
-    createCustomPalette();
   }
 
   setTimeout(function () {
@@ -226,8 +227,8 @@ function nearestColour(targetColour, colourScheme) {
     // Euclidean distance in RGB space
     let distance = Math.sqrt(
       Math.pow(targetColour[0] - color[0], 2) +
-      Math.pow(targetColour[1] - color[1], 2) +
-      Math.pow(targetColour[2] - color[2], 2)
+        Math.pow(targetColour[1] - color[1], 2) +
+        Math.pow(targetColour[2] - color[2], 2),
     );
 
     if (distance < minDistance) {
@@ -247,9 +248,15 @@ function convertImage() {
   var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
   var pixels = imageData.data;
   // Avoid changing of theme mid-conversion
+  theme = getPalette();
+  if (theme.length == 0) {
+    convertButton.disabled = false;
+    return;
+  }
+
   var colourScheme = [];
   for (let i = 0; i < theme.length; i++) {
-    let hex = theme[i].replace(/^#/, '');
+    let hex = theme[i].replace(/^#/, "");
     colourScheme[3 * i] = parseInt(hex.slice(0, 2), 16);
     colourScheme[3 * i + 1] = parseInt(hex.slice(2, 4), 16);
     colourScheme[3 * i + 2] = parseInt(hex.slice(4, 6), 16);
@@ -260,9 +267,9 @@ function convertImage() {
   var batchSize = 0;
   // Make loading slightly faster on mobile
   if (window.innerWidth > 800) {
-    batchSize = Math.floor(canvas.height / 16)
+    batchSize = Math.floor(canvas.height / 16);
   } else {
-    batchSize = Math.floor(canvas.height / 10)
+    batchSize = Math.floor(canvas.height / 10);
   }
 
   // Load by chunk
@@ -339,8 +346,8 @@ function downloadImage() {
 // Apply the selected theme to the website
 function applyWebsiteTheme(themeName) {
   // Remove all theme classes from body
-  document.body.classList.forEach(className => {
-    if (className.startsWith('theme-')) {
+  document.body.classList.forEach((className) => {
+    if (className.startsWith("theme-")) {
       document.body.classList.remove(className);
     }
   });
@@ -349,7 +356,7 @@ function applyWebsiteTheme(themeName) {
   resetCustomCSSProperties();
 
   // Convert theme name to CSS class name (lowercase, replace spaces with hyphens)
-  const themeClass = 'theme-' + themeName.toLowerCase().replace(/ /g, '-');
+  const themeClass = "theme-" + themeName.toLowerCase().replace(/ /g, "-");
 
   // Add the new theme class to body
   document.body.classList.add(themeClass);
@@ -359,18 +366,18 @@ function applyWebsiteTheme(themeName) {
 function resetCustomCSSProperties() {
   // List of CSS variables to reset
   const cssVars = [
-    '--bg-primary',
-    '--bg-secondary',
-    '--bg-tertiary',
-    '--fg-primary',
-    '--fg-secondary',
-    '--fg-tertiary',
-    '--accent',
-    '--border-color'
+    "--bg-primary",
+    "--bg-secondary",
+    "--bg-tertiary",
+    "--fg-primary",
+    "--fg-secondary",
+    "--fg-tertiary",
+    "--accent",
+    "--border-color",
   ];
 
   // Remove the inline styles for each variable
-  cssVars.forEach(variable => {
+  cssVars.forEach((variable) => {
     document.documentElement.style.removeProperty(variable);
   });
 }
@@ -389,9 +396,7 @@ function scrollTheme(scrollDirection = 0) {
     menu.value = themes_keys[0];
   }
 
-  openCustomMenu(true);
-  theme = list_of_themes[menu.value];
-  displayPalette();
+  displayPalette(list_of_themes[menu.value]);
 
   // Apply the selected theme to the website
   applyWebsiteTheme(menu.value);
@@ -409,12 +414,3 @@ menu.addEventListener("wheel", (event) => {
 document.getElementById("theme-select").onchange = function () {
   scrollTheme();
 };
-
-// Updates palette when user sets a colour in the custom menu
-document.addEventListener("click", function (event) {
-  if (event.target.type === "color") {
-    event.target.addEventListener("input", function () {
-      createCustomPalette();
-    });
-  }
-});

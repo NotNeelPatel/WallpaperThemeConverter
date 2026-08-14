@@ -35,13 +35,12 @@
 
   <div class="menu-container">
     <h3>Select a theme</h3>
-    <div id="palette">
-    </div>
 
     <div class="options-container">
       <button id="opt-up" onclick="scrollTheme(-1)">▲</button>
 
       <select name="Colour Scheme" id="theme-select">
+        <option id="custom-option" value="Custom" hidden disabled>Custom Theme</option>
         <option value="Gruvbox">Gruvbox</option>
         <option value="Nord">Nord</option>
         <option value="Everforest">Everforest</option>
@@ -65,6 +64,7 @@
           <option value="Rose Pine Moon">Rose Pine Moon</option>
           <option value="Rose Pine Dawn">Rose Pine Dawn</option>
         </optgroup>
+        <option value="Custom">Custom Theme</option>
         <!-- For Developers: Add grouped themes here under an optgroup (example below):
         <optgroup label="Group Name">
          <option value="Theme Name">Theme Name</option>
@@ -74,20 +74,16 @@
       </select>
 
       <button id="opt-down" onclick="scrollTheme(1)">▼</button>
-      <button id="custom-theme-button" onclick="openCustomMenu()"> + Custom Theme </button>
-    </div>
-    <div class="dither-options" onclick="dither()">
-      <input type="checkbox" id="dither-checkbox" />
-      <label id="dither-checkbox-label" for="checkbox">More Accurate Colours</label>
-      <span class="tooltip-text">Adds dithering to reduce colour-banding</span>
-    </div>
-    <div id="custom-menu">
-      <button onclick="addColour()">+</button>
-      <button onclick="removeColour()">-</button>
-      <div id="colours">
+        <button class="main-button" id="convert" type="button" onclick="initialize()">Convert</button>
       </div>
+<div class="dither-options" onclick="dither()">
+          <input type="checkbox" id="dither-checkbox" />
+          <label id="dither-checkbox-label" for="checkbox">More Accurate Colours</label>
+          <span class="tooltip-text">Adds dithering to reduce colour-banding</span>
+        </div>
+    <div id="palette">
     </div>
-    <button class="main-button" id="convert" type="button" onclick="initialize()">Convert</button>
+
   </div>
 
 </body>
