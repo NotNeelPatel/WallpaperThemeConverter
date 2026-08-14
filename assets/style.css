@@ -232,17 +232,30 @@ input[type="checkbox"]:checked {
 }
 
 .remove-button {
-  border-radius: 100%;
-  background-color: red;
+  background-color: #f22222;
   position: absolute;
   display: flex;
   height: 10px;
   width: 10px;
   padding: 10px;
-  color: white;
+  color: #eee;
   justify-content: center;
   align-items: center;
   border: none;
+  opacity: 1;
+  animation-name: fadeIn;
+  animation-iteration-count: 1;
+  animation-timing-function: ease;
+  animation-duration: 0.2s;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 input[type="color"] {
@@ -272,7 +285,7 @@ input[type="color"]::-moz-color-swatch {
   display: flex;
   min-height: 2rem;
   min-width: 3rem;
-  aligin-items: center;
+  align-items: center;
   justify-content: center;
   margin-left: 0.5em;
   border: 1px solid var(--fg-primary);
@@ -396,13 +409,6 @@ footer a {
   #palette {
     margin: 0;
   }
-
-  /*
-    .palette-node {
-        height: 0.8em;
-        width: 0.8em;
-    }
-  */
 
   #plus-button {
     display: block;

@@ -47,7 +47,7 @@ plusButton.onclick = function () {
 };
 
 const removeButton = document.createElement("button");
-removeButton.textContent = "x";
+removeButton.textContent = "-";
 removeButton.className = "remove-button";
 
 // Changing visibility of download/reset buttons, image canvas
@@ -140,9 +140,6 @@ function addCustomColour() {
   };
   palette_div.appendChild(colour_node);
   palette_div.appendChild(plusButton);
-  if (menu.value === "Custom") {
-    applyCustomWebsiteTheme(getPalette());
-  }
 }
 
 function showRemoveButton(palette_node) {
